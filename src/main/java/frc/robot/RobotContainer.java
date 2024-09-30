@@ -9,19 +9,12 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.lib.generic.GenericSubsystem;
-import frc.lib.generic.hardware.motor.MotorProperties;
 import frc.lib.util.Controller;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.poseestimation.poseestimator.PoseEstimator;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.flywheels.Flywheels;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.kicker.Kicker;
-import frc.robot.subsystems.leds.Leds;
 import frc.robot.subsystems.swerve.Swerve;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -35,11 +28,6 @@ import static frc.robot.poseestimation.poseestimator.PoseEstimatorConstants.FRON
 public class RobotContainer {
     public static final PoseEstimator POSE_ESTIMATOR = new PoseEstimator(FRONT_CAMERA);
     public static final Swerve SWERVE = new Swerve();
-    public static final Arm ARM = new Arm();
-    public static final Flywheels FLYWHEELS = new Flywheels();
-    public static final Intake INTAKE = new Intake();
-    public static final Kicker KICKER = new Kicker();
-    public static final Leds LEDS = new Leds();
 
     public static final BuiltInAccelerometer ROBORIO_ACCELEROMETER = new BuiltInAccelerometer();
 
@@ -105,25 +93,11 @@ public class RobotContainer {
                         BLUE_SPEAKER.toPose2d(), () -> false)
         );
 
-        userButton.toggleOnTrue(Commands.startEnd(
-                () -> {
-                    ARM.setIdleMode(MotorProperties.IdleMode.COAST);
-                    LEDS.setLEDStatus(Leds.LEDMode.SHOOTER_EMPTY, 15);
-                },
-
-                () -> ARM.setIdleMode(MotorProperties.IdleMode.BRAKE),
-
-                ARM, LEDS).ignoringDisable(true)
-        ).debounce(0.5);
-
         configureButtons(ButtonLayout.TELEOP);
     }
 
     private void configureButtons(ButtonLayout layout) {
-        switch (layout) {
-            case CHARACTERIZE_ARM -> setupCharacterization(ARM);
-            case CHARACTERIZE_FLYWHEEL -> setupCharacterization(FLYWHEELS);
-        }
+
     }
 
     private void setupCharacterization(GenericSubsystem subsystem) {
@@ -137,25 +111,10 @@ public class RobotContainer {
         return autoChooser.get();
     }
 
-    private enum ButtonLayout {
-        TELEOP,
-        CHARACTERIZE_FLYWHEEL,
-        CHARACTERIZE_ARM
+    private void setupLEDs() {
     }
 
-    private void setupLEDs() {
-        LEDS.setDefaultCommand(LEDS.setLEDStatus(Leds.LEDMode.DEFAULT, 0));
-
-        final int LOW_BATTERY_THRESHOLD = 150;
-        final int[] lowBatteryCounter = {0};
-
-        new Trigger(() -> {
-            if (RobotController.getBatteryVoltage() < 11.7) lowBatteryCounter[0]++;
-
-            return LOW_BATTERY_THRESHOLD < lowBatteryCounter[0];
-        }).onTrue(LEDS.setLEDStatus(Leds.LEDMode.BATTERY_LOW, 10));
-
-        new Trigger(KICKER::doesSeeNote).onTrue(LEDS.setLEDStatus(Leds.LEDMode.SHOOTER_EMPTY, 3));
-
+    private enum ButtonLayout {
+        TELEOP,
     }
 }
