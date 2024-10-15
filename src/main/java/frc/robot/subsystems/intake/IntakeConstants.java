@@ -8,7 +8,7 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
 
 public class IntakeConstants {
-    protected static final Motor CONVEYOR_MOTOR = MotorFactory.createSpark("INTAKE_MOTOR", 100, MAX);
+    protected static final Motor INTAKE_MOTOR = MotorFactory.createSpark("INTAKE_MOTOR", 100, MAX);
 
     static final MotorProperties.IdleMode INTAKE_NEUTRAL_MODE = MotorProperties.IdleMode.BRAKE;
 

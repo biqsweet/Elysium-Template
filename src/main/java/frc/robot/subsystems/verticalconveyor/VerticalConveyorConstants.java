@@ -15,10 +15,10 @@ public class VerticalConveyorConstants {
     static final MotorConfiguration conveyorMotorConfiguration = new MotorConfiguration();
 
     static {
-        configureIntakeConfiguration();
+        configureConveyorConfiguration();
     }
 
-    private static void configureIntakeConfiguration() {
+    private static void configureConveyorConfiguration() {
         conveyorMotorConfiguration.idleMode = CONVEYOR_NEUTRAL_MODE;
     }
 }

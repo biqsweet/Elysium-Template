@@ -78,7 +78,7 @@ public class SwerveModuleConstants {
             new SwerveModule(RL_DRIVE_MOTOR, RL_STEER_MOTOR, RL_STEER_ENCODER),
             new SwerveModule(RR_DRIVE_MOTOR, RR_STEER_MOTOR, RR_STEER_ENCODER)
     };
-
+ 
     private static void configureSteerEncoder(Encoder steerEncoder, Rotation2d angleOffset) {
         final EncoderConfiguration encoderConfiguration = new EncoderConfiguration();
 
