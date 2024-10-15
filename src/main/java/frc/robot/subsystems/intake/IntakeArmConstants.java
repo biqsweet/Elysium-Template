@@ -1,4 +1,4 @@
-package frc.robot.subsystems.arm;
+package frc.robot.subsystems.intake;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -12,9 +12,9 @@ import frc.lib.generic.simulation.SimulationProperties;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
 
-public class ArmConstants {
-    protected static final Motor ARM_MOTOR = MotorFactory.createSpark("ARM_MOTOR", 102, MAX);
-    protected static final Encoder ARM_ENCODER = EncoderFactory.createCanCoder("ARM_ENCODER", 103);
+public class IntakeArmConstants {
+    protected static final Motor INTAKE_ARM_MOTOR = MotorFactory.createSpark("ARM_MOTOR", 102, MAX);
+    protected static final Encoder INTAKE_ARM_ENCODER = EncoderFactory.createCanCoder("ARM_ENCODER", 103);
 
     private static final Rotation2d MAXIMUM_ANGLE = Rotation2d.fromDegrees(90);
     private static final Rotation2d MINIMUM_ANGLE = Rotation2d.fromDegrees(25);
@@ -26,8 +26,8 @@ public class ArmConstants {
     }
 
     private static void setSimulatedEncoderSources() {
-        ARM_ENCODER.setSimulatedEncoderPositionSource(ARM_MOTOR::getSystemPosition);
-        ARM_ENCODER.setSimulatedEncoderVelocitySource(ARM_MOTOR::getSystemVelocity);
+        INTAKE_ARM_ENCODER.setSimulatedEncoderPositionSource(INTAKE_ARM_MOTOR::getSystemPosition);
+        INTAKE_ARM_ENCODER.setSimulatedEncoderVelocitySource(INTAKE_ARM_MOTOR::getSystemVelocity);
     }
 
     private static void configureArmMotor() {
@@ -37,7 +37,6 @@ public class ArmConstants {
 
         armMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 50, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
 
-        ARM_MOTOR.configure(armMotorConfiguration);
+        INTAKE_ARM_MOTOR.configure(armMotorConfiguration);
     }
 }
-

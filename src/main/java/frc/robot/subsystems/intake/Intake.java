@@ -13,10 +13,6 @@ public class Intake extends GenericSubsystem {
         return Commands.run(this::setVelocity, this);
     }
 
-    public double getVelocity(){
-        return INTAKE_MOTOR.getMotorVelocity();
-    }
-
     private void setVelocity() {
         INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VELOCITY, 10);
     }

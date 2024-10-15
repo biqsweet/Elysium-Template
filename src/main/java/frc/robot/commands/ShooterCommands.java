@@ -1,22 +1,20 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
-import static frc.robot.RobotContainer.CONVEYOR;
-import static frc.robot.RobotContainer.INTAKE;
+import static frc.robot.RobotContainer.*;
 
 public class ShooterCommands {
     public static Command receiveBall(){
-        return INTAKE.setIntakeVelocity()
-                .alongWith()
-                .alongWith();
+        return INTAKE.setIntakeVelocity();
     }
     public static Command moveBallToShooter(){
-        return CONVEYOR.setConveyorVelocity()
-                .alongWith();
+        return CONVEYOR.setConveyorVelocity();
     }
-    public static Command Shoot(){
-        return null;
+    public static Command AimAndShoot(Rotation2d armTargetPosition, Rotation2d turretTargetPosition){
+        return ARM.setArmPosition(armTargetPosition)
+                .alongWith(TURRET.setTurretPosition(turretTargetPosition)
+                        .alongWith());
     }
-
 }
