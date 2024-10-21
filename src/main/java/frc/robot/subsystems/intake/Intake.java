@@ -14,6 +14,6 @@ public class Intake extends GenericSubsystem {
     }
 
     private void setVelocity() {
-        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VELOCITY, 10);
+        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4);
     }
 }
