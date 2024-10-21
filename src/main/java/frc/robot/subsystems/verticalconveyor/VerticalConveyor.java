@@ -13,6 +13,6 @@ public class VerticalConveyor extends GenericSubsystem {
     }
 
     private void setVelocity() {
-        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VELOCITY, 10);
+        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4);
     }
 }
