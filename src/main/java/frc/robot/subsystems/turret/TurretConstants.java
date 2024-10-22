@@ -32,6 +32,7 @@ public class TurretConstants extends GenericSubsystem {
 
         turretMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
         turretMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(2), 150, 0.02);
+        turretMotorConfiguration.closedLoopContinuousWrap = true;
 
         TURRET_MOTOR.configure(turretMotorConfiguration);
     }
