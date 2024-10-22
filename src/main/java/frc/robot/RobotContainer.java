@@ -45,7 +45,10 @@ public class RobotContainer {
         DriverStation.silenceJoystickConnectionWarning(true);
 
         driveController.getButton(Controller.Inputs.LEFT_BUMPER).whileTrue(ShooterCommands.receiveBall());
+        driveController.getButton(Controller.Inputs.B).whileTrue(ShooterCommands.removeBall());
         driveController.getButton(Controller.Inputs.RIGHT_BUMPER).whileTrue(ShooterCommands.moveBallToShooter());
+        // I don't know how to aim
+        //pose estimator?
 
         DoubleSupplier translationSupplier = () -> -driveController.getRawAxis(LEFT_Y);
         DoubleSupplier strafeSupplier = () -> -driveController.getRawAxis(LEFT_X);
