@@ -11,9 +11,9 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import frc.lib.generic.simulation.SimulationProperties;
 
 public class TurretConstants extends GenericSubsystem {
-    protected static final Motor TURRET_MOTOR = MotorFactory.createTalonFX("TURRET_MOTOR", 319);
-    protected static final Encoder TURRET_ENCODER = EncoderFactory.createCanCoder("TURRET_MOTOR", 320);
-    protected static final Motor SECONDERY_TURRET_MOTOR = MotorFactory.createTalonFX("TURRET_MOTOR", 349);
+    protected static final Motor TURRET_MOTOR = MotorFactory.createTalonFX("TURRET_MOTOR", 106);
+    protected static final Encoder TURRET_ENCODER = EncoderFactory.createCanCoder("TURRET_MOTOR", 107);
+    protected static final Motor SECOND_TURRET_MOTOR = MotorFactory.createTalonFX("SECOND_TURRET_MOTOR", 108);
 
     static {
         configureTurretMotor();
@@ -28,10 +28,11 @@ public class TurretConstants extends GenericSubsystem {
     private static void configureTurretMotor() {
         MotorConfiguration turretMotorConfiguration = new MotorConfiguration();
 
-        SECONDERY_TURRET_MOTOR.setFollowerOf("TURRET_MOTOR", 320);
+        SECOND_TURRET_MOTOR.setFollowerOf("TURRET_MOTOR", 107);
 
         turretMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
-        turretMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(2),150,0.02);
+        turretMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(2), 150, 0.02);
+
         TURRET_MOTOR.configure(turretMotorConfiguration);
     }
 }
