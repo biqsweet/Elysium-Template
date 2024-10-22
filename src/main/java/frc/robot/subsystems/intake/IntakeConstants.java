@@ -1,10 +1,7 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.math.system.plant.DCMotor;
-import frc.lib.generic.hardware.motor.Motor;
-import frc.lib.generic.hardware.motor.MotorConfiguration;
-import frc.lib.generic.hardware.motor.MotorFactory;
-import frc.lib.generic.hardware.motor.MotorProperties;
+import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
@@ -22,6 +19,7 @@ public class IntakeConstants {
         intakeMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
         intakeMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(1), 150, 0.02);
 
+        INTAKE_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
 
         INTAKE_MOTOR.configure(intakeMotorConfiguration);
     }

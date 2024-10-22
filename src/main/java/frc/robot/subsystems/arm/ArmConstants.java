@@ -4,10 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderFactory;
-import frc.lib.generic.hardware.motor.Motor;
-import frc.lib.generic.hardware.motor.MotorConfiguration;
-import frc.lib.generic.hardware.motor.MotorFactory;
-import frc.lib.generic.hardware.motor.MotorProperties;
+import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
@@ -34,6 +31,10 @@ public class ArmConstants {
         MotorConfiguration armMotorConfiguration = new MotorConfiguration();
 
         armMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
+
+        ARM_MOTOR.setupSignalUpdates(MotorSignal.POSITION);
+        ARM_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
+
 
         armMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 50, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
 
