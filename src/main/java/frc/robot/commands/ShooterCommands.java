@@ -27,7 +27,9 @@ public class ShooterCommands {
 
     public static Command aimAndShoot(Rotation2d armTargetPosition, Rotation2d turretTargetPosition) {
         return ARM.setArmPosition(armTargetPosition).alongWith(
-                TURRET.setTurretPosition(turretTargetPosition)
+                TURRET.setTurretPosition(turretTargetPosition).andThen(
+                        FLYWHEEL.setFlywheelVelocity()
+                )
         );
     }
 }
