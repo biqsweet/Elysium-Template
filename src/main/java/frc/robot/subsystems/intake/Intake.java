@@ -5,15 +5,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
-
-import static frc.robot.subsystems.intake.IntakeConstants.*;
+import static frc.robot.subsystems.intake.IntakeConstants.INTAKE_MOTOR;
 
 public class Intake extends GenericSubsystem {
-    public Command setIntakeVelocity() {
-        return Commands.run(this::setVelocity, this);
+    public Command setIntakeVelocity(boolean isInverted) {
+        return Commands.run(() -> setVelocity(isInverted));
     }
 
-    private void setVelocity() {
-        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4);
+    private void setVelocity(boolean isInverted) {
+        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? -4 : 4);
     }
 }
