@@ -7,8 +7,14 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import static frc.robot.RobotContainer.*;
 
 public class ShooterCommands {
-    public static Command receiveBall(){
-        return INTAKE.setIntakeVelocity();
+    public static Command receiveBall() {
+        return INTAKE_ARM.engageIntakeArm().andThen(
+                INTAKE.setIntakeVelocity(false).andThen(
+                        new WaitCommand(1.0).andThen(
+                                INTAKE_ARM.disengageIntakeArm()
+                        )
+                )
+        );
     }
 
     public static Command removeBall() {
