@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,8 +23,7 @@ import frc.robot.subsystems.verticalconveyor.VerticalConveyor;
 
 import java.util.function.DoubleSupplier;
 
-import static frc.lib.util.Controller.Axis.LEFT_X;
-import static frc.lib.util.Controller.Axis.LEFT_Y;
+import static frc.lib.util.Controller.Axis.*;
 import static frc.robot.poseestimation.poseestimator.PoseEstimatorConstants.FRONT_CAMERA;
 
 public class RobotContainer {
@@ -52,15 +52,16 @@ public class RobotContainer {
         // I don't know how to aim
         //pose estimator?
 
-        DoubleSupplier translationSupplier = () -> -driveController.getRawAxis(LEFT_Y);
-        DoubleSupplier strafeSupplier = () -> -driveController.getRawAxis(LEFT_X);
+        DoubleSupplier translationSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_Y), 0.05);
+        DoubleSupplier strafeSupplier =() -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_X), 0.05);
+        DoubleSupplier turningSupplier =() -> MathUtil.applyDeadband(-driveController.getRawAxis(RIGHT_X), 0.05);
 
         SWERVE.setDefaultCommand(
                 SWERVE.driveOpenLoop(
                         translationSupplier,
                         strafeSupplier,
 
-                        () -> -driveController.getRawAxis(Controller.Axis.RIGHT_X),
+                        turningSupplier,
                         () -> driveController.getStick(Controller.Stick.RIGHT_STICK).getAsBoolean()
                 ));
 
