@@ -8,11 +8,11 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import static frc.robot.subsystems.intake.IntakeConstants.INTAKE_MOTOR;
 
 public class Intake extends GenericSubsystem {
-    public Command setIntakeVelocity(boolean isInverted) {
-        return Commands.run(() -> setVelocity(isInverted));
+    public Command setIntakeVoltage(boolean isInverted) {
+        return Commands.run(() -> setVoltage(isInverted));
     }
 
-    private void setVelocity(boolean isInverted) {
+    private void setVoltage(boolean isInverted) {
         INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? -4 : 4);
     }
 }

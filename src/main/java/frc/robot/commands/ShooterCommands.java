@@ -9,7 +9,7 @@ import static frc.robot.RobotContainer.*;
 public class ShooterCommands {
     public static Command receiveBall() {
         return INTAKE_ARM.engageIntakeArm().andThen(
-                INTAKE.setIntakeVelocity(false).andThen(
+                INTAKE.setIntakeVoltage(false).andThen(
                         new WaitCommand(1.0).andThen(
                                 INTAKE_ARM.disengageIntakeArm()
                         )
@@ -18,14 +18,14 @@ public class ShooterCommands {
     }
 
     public static Command removeBall() {
-        return INTAKE.setIntakeVelocity(true);
+        return INTAKE.setIntakeVoltage(true);
     }
 
     public static Command moveBallToShooter() {
-        return CONVEYOR.setConveyorVelocity();
+        return CONVEYOR.setConveyorVoltage();
     }
 
-    public static Command AimAndShoot(Rotation2d armTargetPosition, Rotation2d turretTargetPosition) {
+    public static Command aimAndShoot(Rotation2d armTargetPosition, Rotation2d turretTargetPosition) {
         return ARM.setArmPosition(armTargetPosition).alongWith(
                 TURRET.setTurretPosition(turretTargetPosition)
         );
