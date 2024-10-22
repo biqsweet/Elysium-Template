@@ -14,6 +14,7 @@ import frc.robot.commands.ShooterCommands;
 import frc.robot.poseestimation.poseestimator.PoseEstimator;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeArm;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.verticalconveyor.VerticalConveyor;
@@ -28,6 +29,7 @@ public class RobotContainer {
     public static final PoseEstimator POSE_ESTIMATOR = new PoseEstimator(FRONT_CAMERA);
     public static final Swerve SWERVE = new Swerve();
     public static final Intake INTAKE = new Intake();
+    public static final IntakeArm INTAKE_ARM = new IntakeArm();
     public static final Arm ARM = new Arm();
     public static final Turret TURRET = new Turret();
     public static final VerticalConveyor CONVEYOR = new VerticalConveyor();
