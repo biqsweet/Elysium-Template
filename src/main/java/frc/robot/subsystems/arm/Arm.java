@@ -13,6 +13,10 @@ public class Arm extends GenericSubsystem {
         return Commands.run(() -> setTargetPosition(targetPosition));
     }
 
+    public Command stop() {
+        return Commands.runOnce(ARM_MOTOR::stopMotor);
+    }
+
     private void setTargetPosition(Rotation2d targetPosition) {
         ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, targetPosition.getRotations());
     }

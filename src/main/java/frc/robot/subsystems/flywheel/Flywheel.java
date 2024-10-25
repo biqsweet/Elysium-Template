@@ -11,6 +11,10 @@ public class Flywheel {
         return Commands.run(this::setVelocity);
     }
 
+    public Command stop() {
+        return Commands.runOnce(FLYWHEEL_MOTOR::stopMotor);
+    }
+
     private void setVelocity() {
         FLYWHEEL_MOTOR.setOutput(MotorProperties.ControlMode.VELOCITY, 10);
     }

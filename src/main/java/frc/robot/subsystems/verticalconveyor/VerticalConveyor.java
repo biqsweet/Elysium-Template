@@ -12,6 +12,10 @@ public class VerticalConveyor extends GenericSubsystem {
         return Commands.run(this::setVoltage, this);
     }
 
+    public Command stop() {
+        return Commands.runOnce(CONVEYOR_MOTOR::stopMotor);
+    }
+
     private void setVoltage() {
         CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4);
     }

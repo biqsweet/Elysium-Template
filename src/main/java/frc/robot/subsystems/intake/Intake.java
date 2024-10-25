@@ -12,6 +12,10 @@ public class Intake extends GenericSubsystem {
         return Commands.run(() -> setVoltage(isInverted));
     }
 
+    public Command stop() {
+        return Commands.runOnce(INTAKE_MOTOR::stopMotor);
+    }
+
     private void setVoltage(boolean isInverted) {
         INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? -4 : 4);
     }
