@@ -15,6 +15,11 @@ public class IntakeArm extends GenericSubsystem {
     public Command disengageIntakeArm() {
         return Commands.run(() -> setTargetPosition(false));
     }
+
+    public void getCurrentPosition() {
+        INTAKE_ARM_MOTOR.getSystemPosition();
+    }
+
     public Command stop() {
         return Commands.runOnce(INTAKE_ARM_MOTOR::stopMotor);
     }
