@@ -12,6 +12,7 @@ public class IntakeArm extends GenericSubsystem {
     public Command engageIntakeArm() {
         return Commands.run(() -> setTargetPosition(true));
     }
+
     public Command disengageIntakeArm() {
         return Commands.run(() -> setTargetPosition(false));
     }

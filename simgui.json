@@ -95,7 +95,9 @@
           "Arm": {
             "open": true
           },
-          "open": true
+          "FL_DRIVE_MOTOR": {
+            "open": true
+          }
         },
         "RL_STEER_MOTOR": {
           "open": true

@@ -8,8 +8,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.lib.generic.GenericSubsystem;
 import frc.lib.util.Controller;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.poseestimation.poseestimator.PoseEstimator;
@@ -39,6 +37,7 @@ public class RobotContainer {
     public static final BuiltInAccelerometer ROBORIO_ACCELEROMETER = new BuiltInAccelerometer();
 
     private final Controller driveController = new Controller(0);
+
     public RobotContainer() {
         configureBindings();
     }
@@ -53,8 +52,8 @@ public class RobotContainer {
         //pose estimator?
 
         DoubleSupplier translationSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_Y), 0.05);
-        DoubleSupplier strafeSupplier =() -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_X), 0.05);
-        DoubleSupplier turningSupplier =() -> MathUtil.applyDeadband(-driveController.getRawAxis(RIGHT_X), 0.05);
+        DoubleSupplier strafeSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_X), 0.05);
+        DoubleSupplier turningSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(RIGHT_X), 0.05);
 
         SWERVE.setDefaultCommand(
                 SWERVE.driveOpenLoop(
@@ -69,12 +68,12 @@ public class RobotContainer {
         driveController.getButton(Controller.Inputs.BACK).whileTrue(SWERVE.lockSwerve());
     }
 
-    private void setupCharacterization(GenericSubsystem subsystem) {
-        driveController.getButton(Controller.Inputs.A).whileTrue(subsystem.getSysIdQuastatic(SysIdRoutine.Direction.kForward));
-        driveController.getButton(Controller.Inputs.B).whileTrue(subsystem.getSysIdQuastatic(SysIdRoutine.Direction.kReverse));
-        driveController.getButton(Controller.Inputs.Y).whileTrue(subsystem.getSysIdDynamic(SysIdRoutine.Direction.kForward));
-        driveController.getButton(Controller.Inputs.X).whileTrue(subsystem.getSysIdDynamic(SysIdRoutine.Direction.kReverse));
-    }
+//    private void setupCharacterization(GenericSubsystem subsystem) {
+//        driveController.getButton(Controller.Inputs.A).whileTrue(subsystem.getSysIdQuastatic(SysIdRoutine.Direction.kForward));
+//        driveController.getButton(Controller.Inputs.B).whileTrue(subsystem.getSysIdQuastatic(SysIdRoutine.Direction.kReverse));
+//        driveController.getButton(Controller.Inputs.Y).whileTrue(subsystem.getSysIdDynamic(SysIdRoutine.Direction.kForward));
+//        driveController.getButton(Controller.Inputs.X).whileTrue(subsystem.getSysIdDynamic(SysIdRoutine.Direction.kReverse));
+//    }
 
     public Command getAutonomousCommand() {
         return null;
