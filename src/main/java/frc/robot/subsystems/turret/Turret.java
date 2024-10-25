@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
-import static frc.robot.subsystems.turret.TurretConstants.TURRET_MOTOR;
+import static frc.robot.subsystems.turret.TurretConstants.*;
 
 public class Turret extends GenericSubsystem {
     public Command setTurretPosition(Rotation2d targetPosition) {
@@ -22,6 +22,23 @@ public class Turret extends GenericSubsystem {
     }
 
     private void setTargetPosition(Rotation2d targetPosition) {
-        TURRET_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, targetPosition.getRotations());
+        pController(targetPosition, Rotation2d.fromDegrees(TURRET_MOTOR.getSystemPosition()));
     }
+
+    private void pController(Rotation2d targetPosition, Rotation2d currentPosition) {
+        double output = optimize(targetPosition, currentPosition);
+        TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, output);
+    }
+
+    private double optimize(Rotation2d targetPosition, Rotation2d currentPosition) {
+        double error = targetPosition.getDegrees() - currentPosition.getDegrees();
+
+        if (targetPosition.getDegrees() > MAX_ANGLE.getDegrees() || targetPosition.getDegrees() < MIN_ANGLE.getDegrees() || targetPosition.getDegrees() > currentPosition.getDegrees() + 180) {
+            return -K_P * (360 - error);
+        } else {
+            return K_P * error;
+        }
+    }
+
+
 }
