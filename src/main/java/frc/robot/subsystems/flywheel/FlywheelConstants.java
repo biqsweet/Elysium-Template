@@ -16,9 +16,9 @@ public class FlywheelConstants {
     private static void configureFlywheelMotor() {
         MotorConfiguration flywheelMotorConfiguration = new MotorConfiguration();
 
-        FLYWHEEL_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
+        FLYWHEEL_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
 
-        flywheelMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
+        flywheelMotorConfiguration.idleMode = MotorProperties.IdleMode.COAST;
         flywheelMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.FLYWHEEL, DCMotor.getFalcon500(1), 150, 0.02);
 
         FLYWHEEL_MOTOR.configure(flywheelMotorConfiguration);

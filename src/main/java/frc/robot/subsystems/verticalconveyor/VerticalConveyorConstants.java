@@ -18,7 +18,7 @@ public class VerticalConveyorConstants {
 
         CONVEYOR_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
 
-        conveyorMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
+        conveyorMotorConfiguration.idleMode = MotorProperties.IdleMode.COAST;
         conveyorMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(1), 150, 0.02);
 
 
