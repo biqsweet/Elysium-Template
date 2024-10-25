@@ -17,6 +17,6 @@ public class Intake extends GenericSubsystem {
     }
 
     private void setVoltage(boolean isInverted) {
-        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? -4 : 4);
+        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? 4 : -4);
     }
 }
