@@ -17,6 +17,10 @@ public class Turret extends GenericSubsystem {
         return Commands.runOnce(TURRET_MOTOR::stopMotor);
     }
 
+    public void getCurrentPosition() {
+        TURRET_MOTOR.getSystemPosition();
+    }
+
     private void setTargetPosition(Rotation2d targetPosition) {
         TURRET_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, targetPosition.getRotations());
     }
