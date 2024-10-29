@@ -35,7 +35,7 @@ public class IntakeArmConstants {
         INTAKE_ARM_MOTOR.setupSignalUpdates(MotorSignal.POSITION);
         INTAKE_ARM_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
 
-        intakeArmMotorConfiguration.simulationSlot = new MotorProperties.Slot(1,0,0,0,0,0);
+        intakeArmMotorConfiguration.simulationSlot = new MotorProperties.Slot(1, 0, 0, 0, 0, 0);
         intakeArmMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 50, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
 
         INTAKE_ARM_MOTOR.configure(intakeArmMotorConfiguration);
