@@ -28,15 +28,16 @@ public class IntakeArmConstants {
     }
 
     private static void configureArmMotor() {
-        MotorConfiguration armMotorConfiguration = new MotorConfiguration();
+        MotorConfiguration intakeArmMotorConfiguration = new MotorConfiguration();
 
-        armMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
+        intakeArmMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
 
         INTAKE_ARM_MOTOR.setupSignalUpdates(MotorSignal.POSITION);
         INTAKE_ARM_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
 
-        armMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 50, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
+        intakeArmMotorConfiguration.simulationSlot = new MotorProperties.Slot(1,0,0,0,0,0);
+        intakeArmMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 50, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
 
-        INTAKE_ARM_MOTOR.configure(armMotorConfiguration);
+        INTAKE_ARM_MOTOR.configure(intakeArmMotorConfiguration);
     }
 }

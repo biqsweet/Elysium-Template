@@ -20,7 +20,7 @@ public class VerticalConveyorConstants {
 
         conveyorMotorConfiguration.idleMode = MotorProperties.IdleMode.COAST;
         conveyorMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(1), 150, 0.02);
-
+        conveyorMotorConfiguration.simulationSlot = new MotorProperties.Slot(1,0,0,0,0,0);
 
         CONVEYOR_MOTOR.configure(conveyorMotorConfiguration);
     }

@@ -17,6 +17,7 @@ public class IntakeConstants {
         MotorConfiguration intakeMotorConfiguration = new MotorConfiguration();
 
         intakeMotorConfiguration.inverted = true;
+        intakeMotorConfiguration.simulationSlot = new MotorProperties.Slot(1,0,0,0,0,0);
         intakeMotorConfiguration.idleMode = MotorProperties.IdleMode.COAST;
         intakeMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(1), 150, 0.02);
 
