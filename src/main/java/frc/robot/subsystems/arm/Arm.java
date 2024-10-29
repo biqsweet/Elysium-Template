@@ -10,7 +10,7 @@ import static frc.robot.subsystems.arm.ArmConstants.ARM_MOTOR;
 
 public class Arm extends GenericSubsystem {
     public Command setArmPosition(Rotation2d targetPosition) {
-        return Commands.run(() -> setTargetPosition(targetPosition));
+        return Commands.run(this::setTargetPosition);
     }
 
     public Command stop() {
@@ -23,7 +23,7 @@ public class Arm extends GenericSubsystem {
         return Rotation2d.fromRotations(ARM_MOTOR.getSystemPosition());
     }
 
-    private void setTargetPosition(Rotation2d targetPosition) {
-        ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, targetPosition.getRotations());
+    private void setTargetPosition() {
+        ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION,45);
     }
 }
