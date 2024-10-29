@@ -1,5 +1,6 @@
 package frc.robot.subsystems.intake;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
@@ -17,12 +18,12 @@ public class IntakeArm extends GenericSubsystem {
         return Commands.run(() -> setTargetPosition(false));
     }
 
-    public void getCurrentPosition() {
-        INTAKE_ARM_MOTOR.getSystemPosition();
-    }
-
     public Command stop() {
         return Commands.runOnce(INTAKE_ARM_MOTOR::stopMotor);
+    }
+
+    private Rotation2d getCurrentPosition() {
+        return Rotation2d.fromRotations(INTAKE_ARM_MOTOR.getSystemPosition());
     }
 
     private void setTargetPosition(boolean engaged) {

@@ -1,5 +1,6 @@
 package frc.robot.subsystems.flywheel;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.hardware.motor.MotorProperties;
@@ -13,6 +14,10 @@ public class Flywheel {
 
     public Command stop() {
         return Commands.runOnce(FLYWHEEL_MOTOR::stopMotor);
+    }
+
+    private Rotation2d getCurrentPosition() {
+        return Rotation2d.fromRotations(FLYWHEEL_MOTOR.getSystemPosition());
     }
 
     private void setVoltage() {
