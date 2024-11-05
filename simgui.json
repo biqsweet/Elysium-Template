@@ -17,6 +17,7 @@
       "/SmartDashboard/Mechanism/Flywheel": "Mechanism2d",
       "/SmartDashboard/Mechanism/FlywheelLeftSim": "Mechanism2d",
       "/SmartDashboard/Mechanism/FlywheelRightSim": "Mechanism2d",
+      "/SmartDashboard/Mechanisms/ARM_MECHANISM": "Mechanism2d",
       "/SmartDashboard/Mechanisms/ArmMechanism": "Mechanism2d",
       "/SmartDashboard/Mechanisms/FlywheelLeft": "Mechanism2d",
       "/SmartDashboard/Mechanisms/FlywheelLeftSim": "Mechanism2d",
@@ -47,6 +48,11 @@
         "right": 2961,
         "top": 79,
         "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Mechanisms/ARM_MECHANISM": {
         "window": {
           "visible": true
         }

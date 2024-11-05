@@ -4,7 +4,7 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import frc.lib.generic.hardware.motor.MotorConfiguration;
 import frc.lib.generic.hardware.motor.MotorProperties;
 import frc.lib.generic.hardware.motor.MotorSignal;
-import frc.lib.generic.hardware.motor.hardware.SimulationTalonFX;
+import frc.lib.generic.hardware.motor.hardware.simulated.SimulationTalonFX;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +77,8 @@ public abstract class GenericSimulation {
     public abstract double getPositionRotations();
 
     public abstract double getVelocityRotationsPerSecond();
+
+    public abstract double getAccelerationRotationsPerSecondSquared();
 
     public abstract double getCurrent();
 

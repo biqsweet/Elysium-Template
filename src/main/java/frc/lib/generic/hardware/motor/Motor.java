@@ -3,10 +3,14 @@ package frc.lib.generic.hardware.motor;
 import frc.lib.generic.hardware.HardwareManager;
 import frc.lib.generic.advantagekit.LoggableHardware;
 import frc.lib.generic.hardware.encoder.Encoder;
+import frc.robot.GlobalConstants;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.NoSuchElementException;
 import java.util.function.DoubleSupplier;
+
+import static frc.lib.generic.hardware.motor.MotorInputs.MOTOR_INPUTS_LENGTH;
+import static frc.robot.GlobalConstants.CURRENT_MODE;
 
 /**
  * Custom Motor class to allow switching and replacing motors quickly,
@@ -236,6 +240,16 @@ public class Motor implements LoggableHardware {
         return inputs.systemVelocity;
     }
 
+    /**
+     * Gearing applied
+     *
+     * @Units In rotations per second
+     */
+    public double getSystemAcceleration() {
+        if (!getSignalsToLog()[6]) printSignalError("ACCELERATION");
+        return inputs.systemAcceleration;
+    }
+
     public void setFollowerOf(String name, int masterPort) { }
 
     /** Signals are lazily loaded - only these explicitly called will be updated. Thus you must call this method. when using a signal.*/
@@ -289,7 +303,7 @@ public class Motor implements LoggableHardware {
 
     protected void refreshInputs(MotorInputs inputs) { }
 
-    protected boolean[] getSignalsToLog() { return new boolean[0]; }
+    protected boolean[] getSignalsToLog() { return new boolean[MOTOR_INPUTS_LENGTH]; }
 
     @Override
     public void periodic() {
@@ -302,8 +316,9 @@ public class Motor implements LoggableHardware {
         return inputs;
     }
 
-
     private void printSignalError(String signalName) {
+        if (CURRENT_MODE == GlobalConstants.Mode.REPLAY) return;
+
         new NoSuchElementException("--------------\n" +
                 "ERROR - TRYING TO RETRIEVE UNINITIALIZED SIGNAL " + signalName + "| AT MOTOR " + name +
                 "\n--------------").printStackTrace();

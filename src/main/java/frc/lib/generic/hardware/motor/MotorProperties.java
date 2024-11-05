@@ -1,26 +1,16 @@
 package frc.lib.generic.hardware.motor;
 
-import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
-
-import java.util.function.Function;
-
 public class MotorProperties {
     public enum IdleMode {
         COAST, BRAKE
     }
 
     public enum SparkType {
-        MAX((id -> new CANSparkMax(id, CANSparkMax.MotorType.kBrushless))),
-        FLEX((id -> new CANSparkFlex(id, CANSparkFlex.MotorType.kBrushless)));
+        MAX, FLEX;
+    }
 
-        public final Function<Integer, CANSparkBase> sparkCreator;
-
-        SparkType(Function<Integer, CANSparkBase> sparkCreator) {
-            this.sparkCreator = sparkCreator;
-        }
+    public enum GravityType {
+        SIMPLE, ARM, ELEVATOR
     }
 
     /**
@@ -64,15 +54,14 @@ public class MotorProperties {
         VELOCITY();
 
         ControlMode() {
-
         }
     }
 
     public static final class Slot {
         private final double kP, kD, kI, kV, kA, kS, kG;
-        private final GravityTypeValue gravityType;
+        private final GravityType gravityType;
 
-        public Slot(double kP, double kI, double kD, double kV, double kA, double kS, double kG, GravityTypeValue gravityType) {
+        public Slot(double kP, double kI, double kD, double kV, double kA, double kS, double kG, GravityType gravityType) {
             this.kP = kP;
             this.kI = kI;
             this.kD = kD;
@@ -84,7 +73,7 @@ public class MotorProperties {
         }
 
         public Slot(double kP, double kI, double kD, double kV, double kA, double kS) {
-            this(kP, kI, kD, kV, kA, kS, 0, null);
+            this(kP, kI, kD, kV, kA, kS, 0, GravityType.SIMPLE);
         }
 
         public Slot(double kP, double kI, double kD) {
@@ -119,7 +108,7 @@ public class MotorProperties {
             return kG;
         }
 
-        public GravityTypeValue gravityType() {
+        public GravityType gravityType() {
             return gravityType;
         }
     }

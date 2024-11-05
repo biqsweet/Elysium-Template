@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.Controller;
 import frc.robot.commands.ShooterCommands;
@@ -66,6 +67,9 @@ public class RobotContainer {
 
         driveController.getButton(Controller.Inputs.START).whileTrue(SWERVE.resetGyro());
         driveController.getButton(Controller.Inputs.BACK).whileTrue(SWERVE.lockSwerve());
+
+        driveController.getButton(Controller.Inputs.A).whileTrue(ARM.setArmPosition());
+
     }
 
 //    private void setupCharacterization(GenericSubsystem subsystem) {
