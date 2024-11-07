@@ -34,9 +34,10 @@ public class ArmConstants {
 
         ARM_MOTOR.setupSignalUpdates(MotorSignal.POSITION);
         ARM_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
+        ARM_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
 
-        armMotorConfiguration.simulationSlot = new MotorProperties.Slot(1,0,0,0,0,0);
-        armMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 50, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
+        armMotorConfiguration.simulationSlot = new MotorProperties.Slot(100, 0, 0, 0, 0, 0);
+        armMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 150, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
 
         ARM_MOTOR.configure(armMotorConfiguration);
     }
