@@ -9,8 +9,8 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import static frc.robot.subsystems.verticalconveyor.VerticalConveyorConstants.CONVEYOR_MOTOR;
 
 public class VerticalConveyor extends GenericSubsystem {
-    public Command setConveyorVoltage() {
-        return Commands.run(this::setVoltage, this);
+    public Command setConveyorVoltage(boolean isInverted) {
+        return Commands.run(() -> setVoltage(isInverted), this);
     }
 
     public Command stop() {
