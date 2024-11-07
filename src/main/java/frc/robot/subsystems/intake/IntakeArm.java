@@ -27,6 +27,6 @@ public class IntakeArm extends GenericSubsystem {
     }
 
     private void setTargetPosition(boolean engaged) {
-        INTAKE_ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, engaged ? 0 : 45);
+        INTAKE_ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, engaged ? 0 : 0.25);
     }
 }
