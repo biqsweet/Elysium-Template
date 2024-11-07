@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -10,9 +9,13 @@ public class ShooterCommands {
     public static Command receiveBall() {
         return INTAKE_ARM.engageIntakeArm().andThen(
                 INTAKE.setIntakeVoltage(false).alongWith(
-                        new WaitCommand(1.0).andThen(
-                                INTAKE_ARM.disengageIntakeArm().andThen(
-                                        INTAKE.stop()
+                        CONVEYOR.setConveyorVoltage(false).alongWith(
+                                new WaitCommand(1.0).andThen(
+                                        INTAKE_ARM.disengageIntakeArm().alongWith(
+                                                INTAKE.stop().alongWith(
+                                                        CONVEYOR.stop()
+                                                )
+                                        )
                                 )
                         )
                 )
@@ -21,30 +24,34 @@ public class ShooterCommands {
 
     public static Command removeBall() {
         return INTAKE.setIntakeVoltage(true).alongWith(
-                new WaitCommand(1.0).andThen(
-                        INTAKE.stop()
-                )
-        );
-    }
-
-    public static Command moveBallToShooter() {
-        return CONVEYOR.setConveyorVoltage().alongWith(
-                new WaitCommand(1.0).andThen(
-                        CONVEYOR.stop()
-                )
-        );
-    }
-
-    public static Command aimAndShoot(Rotation2d armTargetPosition, Rotation2d turretTargetPosition) {
-        return ARM.setArmPosition(armTargetPosition).alongWith(
-                TURRET.setTurretPosition(turretTargetPosition).andThen(
-                        FLYWHEEL.setFlywheelVelocity().alongWith(
-                                new WaitCommand(1.0).andThen(
-                                        FLYWHEEL.stop()
+                CONVEYOR.setConveyorVoltage(true).alongWith(
+                        new WaitCommand(1.0).andThen(
+                                INTAKE.stop().alongWith(
+                                        CONVEYOR.stop()
                                 )
                         )
                 )
         );
     }
 
+    public static Command aimAndShoot() {
+        return ARM.setArmPosition45().alongWith(
+                TURRET.autoAimTurret().andThen(
+                        FLYWHEEL.setFlywheelVelocity().alongWith(
+                                new WaitCommand(1.0).andThen(
+                                        FLYWHEEL.stop().alongWith(
+                                                TURRET.stop().alongWith(
+                                                        ARM.stop()
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+    }
+
+    public static Command armPositionTo10() {
+        return ARM.setArmPosition10().andThen(
+                ARM.stop());
+    }
 }
