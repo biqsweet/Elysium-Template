@@ -21,7 +21,7 @@ public class VerticalConveyor extends GenericSubsystem {
         return Rotation2d.fromRotations(CONVEYOR_MOTOR.getSystemPosition());
     }
 
-    private void setVoltage() {
-        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4);
+    private void setVoltage(boolean isInverted) {
+        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? 4 : -4);
     }
 }
