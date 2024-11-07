@@ -11,11 +11,11 @@ import static frc.robot.subsystems.intake.IntakeArmConstants.INTAKE_ARM_MOTOR;
 
 public class IntakeArm extends GenericSubsystem {
     public Command engageIntakeArm() {
-        return Commands.run(() -> setTargetPosition(true));
+        return Commands.run(() -> setTargetPosition(true), this);
     }
 
     public Command disengageIntakeArm() {
-        return Commands.run(() -> setTargetPosition(false));
+        return Commands.run(() -> setTargetPosition(false), this);
     }
 
     public Command stop() {

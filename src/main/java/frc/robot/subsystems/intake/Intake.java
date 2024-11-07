@@ -10,7 +10,7 @@ import static frc.robot.subsystems.intake.IntakeConstants.INTAKE_MOTOR;
 
 public class Intake extends GenericSubsystem {
     public Command setIntakeVoltage(boolean isInverted) {
-        return Commands.run(() -> setVoltage(isInverted));
+        return Commands.run(() -> setVoltage(isInverted), this);
     }
 
     public Command stop() {
