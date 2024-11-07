@@ -17,6 +17,9 @@ public class TurretConstants extends GenericSubsystem {
     protected static final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(-720);
     protected static final double K_P = 40;
 
+    protected static final double HUB_X = 8;
+    protected static final double HUB_Y = 4;
+
     static {
         configureTurretMotor();
         setSimulatedEncoderSources();

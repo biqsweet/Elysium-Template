@@ -6,11 +6,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static frc.robot.subsystems.turret.TurretConstants.*;
 
 public class Turret extends GenericSubsystem {
-    public Command setTurretPosition(Rotation2d targetPosition) {
-        return Commands.run(() -> setTargetPosition(targetPosition));
+    public Command autoAimTurret() {
+        double robotX = POSE_ESTIMATOR.getCurrentPose().getX();
+        double robotY = POSE_ESTIMATOR.getCurrentPose().getY();
+
+        Rotation2d angleToHub = Rotation2d.fromDegrees(Math.atan(HUB_Y - robotY / HUB_X - robotX));
+
+        return Commands.run(() -> setTargetPosition(angleToHub), this);
     }
 
     public Command stop() {
