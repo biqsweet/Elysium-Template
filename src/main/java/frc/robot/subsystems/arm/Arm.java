@@ -24,6 +24,7 @@ public class Arm extends GenericSubsystem {
     public void getCurrentPosition() {
         ARM_MOTOR.getSystemPosition();
     private Rotation2d getCurrentPosition() {
+    public Rotation2d getCurrentArmPosition() {
         return Rotation2d.fromRotations(ARM_MOTOR.getSystemPosition());
     }
 

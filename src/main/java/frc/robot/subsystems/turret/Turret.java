@@ -23,7 +23,7 @@ public class Turret extends GenericSubsystem {
         return Commands.runOnce(TURRET_MOTOR::stopMotor);
     }
 
-    private Rotation2d getCurrentPosition() {
+    public Rotation2d getCurrentTurretPosition() {
         return Rotation2d.fromRotations(TURRET_MOTOR.getSystemPosition());
     }
 
@@ -39,7 +39,9 @@ public class Turret extends GenericSubsystem {
     private double optimize(Rotation2d targetPosition, Rotation2d currentPosition) {
         double error = targetPosition.getDegrees() - currentPosition.getDegrees();
 
-        if (targetPosition.getDegrees() > MAX_ANGLE.getDegrees() || targetPosition.getDegrees() < MIN_ANGLE.getDegrees() || targetPosition.getDegrees() > currentPosition.getDegrees() + 180) {
+        if (targetPosition.getDegrees() > MAX_ANGLE.getDegrees() ||
+                targetPosition.getDegrees() < MIN_ANGLE.getDegrees() ||
+                targetPosition.getDegrees() > currentPosition.getDegrees() + 180) {
             return -K_P * (360 - error);
         } else {
             return K_P * error;

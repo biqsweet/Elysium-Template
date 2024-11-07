@@ -18,7 +18,7 @@ public class IntakeArmConstants {
 
 
     static {
-        configureArmMotor();
+        configureIntakeArmMotor();
         setSimulatedEncoderSources();
     }
 
@@ -27,7 +27,7 @@ public class IntakeArmConstants {
         INTAKE_ARM_ENCODER.setSimulatedEncoderVelocitySource(INTAKE_ARM_MOTOR::getSystemVelocity);
     }
 
-    private static void configureArmMotor() {
+    private static void configureIntakeArmMotor() {
         MotorConfiguration intakeArmMotorConfiguration = new MotorConfiguration();
 
         intakeArmMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;

@@ -4,6 +4,11 @@
       "window": {
         "visible": false
       }
+    },
+    "Timing": {
+      "window": {
+        "visible": false
+      }
     }
   },
   "NTProvider": {
@@ -36,10 +41,7 @@
         "left": 150,
         "right": 2961,
         "top": 79,
-        "width": 16.541748046875,
-        "window": {
-          "visible": true
-        }
+        "width": 16.541748046875
       },
       "/SmartDashboard/Field": {
         "bottom": 1476,
@@ -57,31 +59,13 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Mechanisms/ArmMechanism": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Mechanisms/Left Flywheel": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Mechanisms/Right Flywheel": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "bottom": 1476,
         "height": 8.210550308227539,
         "left": 150,
         "right": 2961,
         "top": 79,
-        "width": 16.541748046875,
-        "window": {
-          "visible": true
-        }
+        "width": 16.541748046875
       }
     }
   },
@@ -98,17 +82,15 @@
           "open": true
         },
         "Motors": {
+          "ARM_MOTOR": {
+            "open": true
+          },
           "Arm": {
             "open": true
           },
-          "FL_DRIVE_MOTOR": {
-            "open": true
-          }
-        },
-        "RL_STEER_MOTOR": {
           "open": true
         },
-        "RealOutputs": {
+        "RL_STEER_MOTOR": {
           "open": true
         },
         "open": true
@@ -121,6 +103,15 @@
           "open": true
         },
         "Mechanisms": {
+          "ARM_MECHANISM": {
+            "AngleRoot": {
+              "CurrentPositionLigament": {
+                "open": true
+              },
+              "open": true
+            },
+            "open": true
+          },
           "open": true
         },
         "TunableNumbers": {
@@ -142,8 +133,7 @@
   "NetworkTables Info": {
     "Connections": {
       "open": true
-    },
-    "visible": true
+    }
   },
   "Plot": {
     "Plot <0>": {
