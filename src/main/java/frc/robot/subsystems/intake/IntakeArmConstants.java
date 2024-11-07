@@ -10,8 +10,8 @@ import frc.lib.generic.simulation.SimulationProperties;
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
 
 public class IntakeArmConstants {
-    protected static final Motor INTAKE_ARM_MOTOR = MotorFactory.createSpark("ARM_MOTOR", 104, MAX);
-    protected static final Encoder INTAKE_ARM_ENCODER = EncoderFactory.createCanCoder("ARM_ENCODER", 105);
+    protected static final Motor INTAKE_ARM_MOTOR = MotorFactory.createSpark("INTAKE_ARM_MOTOR", 104, MAX);
+    protected static final Encoder INTAKE_ARM_ENCODER = EncoderFactory.createCanCoder("INTAKE_ARM_ENCODER", 105);
 
     private static final Rotation2d MAXIMUM_ANGLE = Rotation2d.fromDegrees(90);
     private static final Rotation2d MINIMUM_ANGLE = Rotation2d.fromDegrees(25);
