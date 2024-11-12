@@ -6,12 +6,20 @@ import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderFactory;
 import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
+import frc.lib.generic.simulation.mechanisms.createSingleJointedArmPose3d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
 
 public class ArmConstants {
     protected static final Motor ARM_MOTOR = MotorFactory.createSpark("ARM_MOTOR", 102, MAX);
     protected static final Encoder ARM_ENCODER = EncoderFactory.createCanCoder("ARM_ENCODER", 103);
+
+    protected static final createSingleJointedArmPose3d ARM_POSE_3D = new createSingleJointedArmPose3d(
+            "ARM_MECHANISM",
+            0,
+            0,
+            0.5
+    );
 
     private static final Rotation2d MAXIMUM_ANGLE = Rotation2d.fromDegrees(90);
     private static final Rotation2d MINIMUM_ANGLE = Rotation2d.fromDegrees(25);
