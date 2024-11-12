@@ -29,6 +29,6 @@ public class Arm extends GenericSubsystem {
     }
 
     private void setTargetPosition(boolean position) {
-        ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, position ? 0.25 : 0);
+        ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, position ? 0.15 : 0);
     }
 }
