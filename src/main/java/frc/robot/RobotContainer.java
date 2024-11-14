@@ -45,10 +45,14 @@ public class RobotContainer {
     private void configureBindings() {
         DriverStation.silenceJoystickConnectionWarning(true);
 
-        driveController.getButton(Controller.Inputs.A).whileTrue(ShooterCommands.receiveBall());
-        driveController.getButton(Controller.Inputs.X).whileTrue(ShooterCommands.armPositionTo10());
-        driveController.getButton(Controller.Inputs.B).whileTrue(ShooterCommands.removeBall());
-        driveController.getButton(Controller.Inputs.Y).whileTrue(ShooterCommands.aimAndShoot());
+        //A=Z on keyboard
+        //B=X on keyboard
+        //X=C on keyboard
+        //Y=V on keyboard
+        driveController.getButton(Controller.Inputs.A).toggleOnTrue(ShooterCommands.stopAllSystems());
+        driveController.getButton(Controller.Inputs.B).toggleOnTrue(ShooterCommands.receiveBall());
+        driveController.getButton(Controller.Inputs.X).onTrue(ShooterCommands.removeBall());
+        driveController.getButton(Controller.Inputs.Y).onTrue(ShooterCommands.aimAndShoot());
 
         DoubleSupplier translationSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_Y), 0.05);
         DoubleSupplier strafeSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_X), 0.05);
@@ -58,7 +62,6 @@ public class RobotContainer {
                 SWERVE.driveOpenLoop(
                         translationSupplier,
                         strafeSupplier,
-
                         turningSupplier,
                         () -> driveController.getStick(Controller.Stick.RIGHT_STICK).getAsBoolean()
                 ));
