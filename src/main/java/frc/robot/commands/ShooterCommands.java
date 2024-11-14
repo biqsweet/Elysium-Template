@@ -7,51 +7,36 @@ import static frc.robot.RobotContainer.*;
 
 public class ShooterCommands {
     public static Command receiveBall() {
-        return INTAKE_ARM.engageIntakeArm().andThen(
-                INTAKE.setIntakeVoltage(false).alongWith(
-                        CONVEYOR.setConveyorVoltage(false).alongWith(
-                                new WaitCommand(1.0).andThen(
-                                        INTAKE_ARM.disengageIntakeArm().alongWith(
-                                                INTAKE.stop().alongWith(
-                                                        CONVEYOR.stop()
-                                                )
-                                        )
-                                )
-                        )
-                )
-        );
-    }
+        return INTAKE_ARM.setIntakeArmPosition(0).andThen(
+                INTAKE.setIntakeVoltage(4).alongWith( //todo: Seems like a lot of these and these could be completed in parallel
+                        CONVEYOR.setConveyorVoltage(4)));
+    }//todo: If you see staircases you're probably doing something wrong. Split these into multiple Command variables and call them instead of this mess
 
     public static Command removeBall() {
-        return INTAKE.setIntakeVoltage(true).alongWith(
-                CONVEYOR.setConveyorVoltage(true).alongWith(
-                        new WaitCommand(1.0).andThen(
-                                INTAKE.stop().alongWith(
-                                        CONVEYOR.stop()
-                                )
-                        )
-                )
-        );
-    }
+        return INTAKE.setIntakeVoltage(-4).alongWith(
+                CONVEYOR.setConveyorVoltage(-4)).andThen(
+                new WaitCommand(1.0)).andThen(
+                INTAKE.stop().alongWith(CONVEYOR.stop()));
+    }//todo: Again, no staircases. Also do it in parallel
 
     public static Command aimAndShoot() {
-        return ARM.setArmPosition45().alongWith(
-                TURRET.autoAimTurret().andThen(
-                        FLYWHEEL.setFlywheelVelocity().alongWith(
-                                new WaitCommand(1.0).andThen(
-                                        FLYWHEEL.stop().alongWith(
-                                                TURRET.stop().alongWith(
-                                                        ARM.stop()
-                                                )
-                                        )
-                                )
-                        )
-                )
-        );
+        return ARM.setArmPosition(0.5).andThen(
+                FLYWHEEL.setFlywheelVoltage(-4)).andThen(
+                ARM.setArmPosition(0)).andThen(
+                FLYWHEEL.stop().alongWith(
+                        ARM.stop()));
+    }//todo: Parallel? no staircase
+
+    public static Command rotateTurret() {//todo: Better name please
+        return TURRET.spinTurret();
     }
 
-    public static Command armPositionTo10() {
-        return ARM.setArmPosition10().andThen(
-                ARM.stop());
-    }
+    public static Command stopAllSystems() {
+        return ARM.stop().alongWith(
+                TURRET.stop()).alongWith(
+                INTAKE_ARM.stop()).alongWith(
+                INTAKE.stop()).alongWith(
+                FLYWHEEL.stop()).alongWith(
+                CONVEYOR.stop());
+    }//todo: Staircase, parallel
 }
