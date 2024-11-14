@@ -25,7 +25,7 @@ public class IntakeArm extends GenericSubsystem {
         INTAKE_ARM_POSE_3D.updateComponent(getCurrentIntakeArmPosition(), INTAKE_ARM_YAW);
     }
 
-    private Rotation2d getCurrentPosition() {
+    private Rotation2d getCurrentIntakeArmPosition() {
         return Rotation2d.fromRotations(INTAKE_ARM_MOTOR.getSystemPosition());
     }
 

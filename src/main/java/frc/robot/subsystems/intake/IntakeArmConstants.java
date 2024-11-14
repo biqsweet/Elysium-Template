@@ -14,9 +14,6 @@ public class IntakeArmConstants {
     protected static final Motor INTAKE_ARM_MOTOR = MotorFactory.createSpark("INTAKE_ARM_MOTOR", 104, MAX);
     protected static final Encoder INTAKE_ARM_ENCODER = EncoderFactory.createCanCoder("INTAKE_ARM_ENCODER", 105);
 
-    private static final Rotation2d MAXIMUM_ANGLE = Rotation2d.fromDegrees(90);
-    private static final Rotation2d MINIMUM_ANGLE = Rotation2d.fromDegrees(25);
-
     protected static final Component3d INTAKE_ARM_POSE_3D = new Component3d(
             "INTAKE_ARM_MECHANISM",
             -0.35,
@@ -24,6 +21,9 @@ public class IntakeArmConstants {
             0.28
     );
     protected static final Rotation2d INTAKE_ARM_YAW = Rotation2d.fromDegrees(0);
+    private static final Rotation2d
+            MAXIMUM_ANGLE = Rotation2d.fromDegrees(90),
+            MINIMUM_ANGLE = Rotation2d.fromDegrees(25);
 
     static {
         configureIntakeArmMotor();
