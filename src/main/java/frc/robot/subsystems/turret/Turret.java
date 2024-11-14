@@ -1,20 +1,26 @@
 package frc.robot.subsystems.turret;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
+
+import java.util.function.DoubleSupplier;
 
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static frc.robot.subsystems.turret.TurretConstants.*;
 
 public class Turret extends GenericSubsystem {
     public Command autoAimTurret() {
-        double robotX = POSE_ESTIMATOR.getCurrentPose().getX();
-        double robotY = POSE_ESTIMATOR.getCurrentPose().getY();
+        return Commands.run(() -> setTargetPosition(autoAim()), this);//todo: fix weird spacing. V
+    }
 
-        Rotation2d angleToHub = Rotation2d.fromDegrees(Math.atan(HUB_Y - robotY / HUB_X - robotX));
+    public Command spinTurret() {
+        return Commands.run(() -> TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4), this);
+    } //todo: is this a test method? if so name it accordingly. V
 
         return Commands.run(() -> setTargetPosition(angleToHub), this);
     }
@@ -40,22 +46,49 @@ public class Turret extends GenericSubsystem {
         setAndOptimizeOutput(targetPosition, getCurrentTurretPosition().getRotations());
     }
 
-    private void pController(Rotation2d targetPosition, Rotation2d currentPosition) {
-        double output = optimize(targetPosition, currentPosition);
-        TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, output);
+    /**
+     * @Units - in rotations
+     */
+    private double autoAim() {
+        final DoubleSupplier deltaX = () -> HUB_POSITION.getX() - POSE_ESTIMATOR.getCurrentPose().getX();
+        final DoubleSupplier deltaY = () -> HUB_POSITION.getY() - POSE_ESTIMATOR.getCurrentPose().getY();
+
+        final Translation2d robotPose = POSE_ESTIMATOR.getCurrentPose().getTranslation();
+        final Translation2d diff = HUB_POSITION.minus(robotPose);
+
+        double degreeToHub = Units.radiansToRotations(Math.atan2(diff.getY(), diff.getX()));
+
+        if (diff.getX() < 0) {
+            return degreeToHub += 0.5;
+        } else {
+            return degreeToHub;
+        }
+
+        //todo: cool impl. however, you should use the conventional Translation2d to get the angle between two poses like so:
+        //  diff = translation1.minus(translation2
+        // return atan2(diff#getY, diff#getX);
     }
 
-    private double optimize(Rotation2d targetPosition, Rotation2d currentPosition) {
-        double error = targetPosition.getDegrees() - currentPosition.getDegrees();
+    /**
+     * @Units - in rotations
+     */
+    private void setAndOptimizeOutput(double targetPosition, double currentPosition) {
+        //todo: horrible name for a function. describe what it is DOING, not how. V
+        TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, optimize(targetPosition, currentPosition));
+    }
 
-        if (targetPosition.getDegrees() > MAX_ANGLE.getDegrees() ||
-                targetPosition.getDegrees() < MIN_ANGLE.getDegrees() ||
-                targetPosition.getDegrees() > currentPosition.getDegrees() + 180) {
-            return -K_P * (360 - error);
+    /**
+     * @Units - in rotations
+     */
+    private double optimize(double targetPosition, double currentPosition) {
+        final double error = targetPosition - currentPosition;
+
+        if (targetPosition > MAX_ANGLE.getRotations() ||
+                targetPosition < MIN_ANGLE.getRotations() ||
+                targetPosition > currentPosition + 0.5) {
+            return -K_P * (1 - error);
         } else {
             return K_P * error;
         }
     }
-
-
 }
