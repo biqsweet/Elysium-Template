@@ -46,11 +46,11 @@ public class TurretConstants extends GenericSubsystem {
 
         TURRET_MOTOR.setupSignalUpdates(MotorSignal.POSITION);
         TURRET_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
+        TURRET_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
 
-        turretMotorConfiguration.simulationSlot = new MotorProperties.Slot(1, 0, 0, 0, 0, 0);
+        turretMotorConfiguration.simulationSlot = new MotorProperties.Slot(K_P, 0, 0, 0, 0, 0);
         turretMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
-        turretMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(2), 150, 0.02);
-        turretMotorConfiguration.closedLoopContinuousWrap = true;
+        turretMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(2), 10, 0.02);
 
         TURRET_MOTOR.configure(turretMotorConfiguration);
     }
