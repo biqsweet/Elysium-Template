@@ -9,7 +9,6 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import static frc.robot.RobotContainer.TURRET;
 import static frc.robot.subsystems.arm.ArmConstants.ARM_MOTOR;
 import static frc.robot.subsystems.arm.ArmConstants.ARM_POSE_3D;
-import static frc.robot.subsystems.arm.ArmConstants.ARM_MOTOR;
 
 public class Arm extends GenericSubsystem {
     /**
