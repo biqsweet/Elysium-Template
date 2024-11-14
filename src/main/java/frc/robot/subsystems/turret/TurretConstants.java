@@ -12,8 +12,8 @@ import frc.lib.generic.simulation.mechanisms.Component3d;
 
 public class TurretConstants extends GenericSubsystem {
     protected static final Motor TURRET_MOTOR = MotorFactory.createTalonFX("TURRET_MOTOR", 106);
-    protected static final Encoder TURRET_ENCODER = EncoderFactory.createCanCoder("TURRET_MOTOR", 107);
-    protected static final Motor SECOND_TURRET_MOTOR = MotorFactory.createTalonFX("SECOND_TURRET_MOTOR", 108);
+    protected static final Motor SECOND_TURRET_MOTOR = MotorFactory.createTalonFX("SECOND_TURRET_MOTOR", 107);
+    protected static final Encoder TURRET_ENCODER = EncoderFactory.createCanCoder("TURRET_ENCODER", 108);  //todo: encoder named motor? nice copy pasting V
 
     protected static final Component3d TURRET_POSE_3D = new Component3d(
             "TURRET_MECHANISM",
