@@ -94,7 +94,7 @@ public class SpeedMechanism2d {
         buildArrowAtLigament(targetVelocity, targetVelocityTopArrowLigament, targetVelocityBottomArrowLigament);
         targetVelocityLigament.setLength(targetVelocity);
     }
-    //todo: cleanup this file like what the ehll was he doing lmfao??
+    //todo: cleanup this file like what the hell was he doing lmfao??
 
     private void setCurrentLigamentColor(Color8Bit color) {
         currentVelocityLigament.setColor(color);

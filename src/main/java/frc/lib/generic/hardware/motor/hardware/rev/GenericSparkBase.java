@@ -96,7 +96,7 @@ public abstract class GenericSparkBase extends Motor {
                     this.feedforward = new Feedforward(Feedforward.Type.SIMPLE, new Feedforward.FeedForwardConstants(kS, kV, kA, kG));
 //                    this.feedforward.setFeedforwardConstants(kS, kV, kA, kG);
                 }
-                //todo wtf.. change how you do FF so this doesn;t happen.
+                //todo wtf.. change how you do FF so this doesn't happen.
                 handleSmoothMotion(motionType, goalState, motionProfile, this.feedforward, slotToUse);
             }
             case VOLTAGE -> sparkController.setReference(output, CANSparkBase.ControlType.kVoltage, slotToUse, 0);
