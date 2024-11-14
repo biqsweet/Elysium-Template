@@ -31,7 +31,7 @@ public class TurretConstants extends GenericSubsystem {
     }
 
     private static void configureTurretMotor() {
-        MotorConfiguration turretMotorConfiguration = new MotorConfiguration();
+        final MotorConfiguration turretMotorConfiguration = new MotorConfiguration();  //todo: if it can be final V
 
         SECOND_TURRET_MOTOR.setFollowerOf("TURRET_MOTOR", 107);
 

@@ -36,7 +36,7 @@ public class ArmConstants {
     }
 
     private static void configureArmMotor() {
-        MotorConfiguration armMotorConfiguration = new MotorConfiguration();
+        final MotorConfiguration armMotorConfiguration = new MotorConfiguration();  //todo: FINAL!L! V
 
         armMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
 
