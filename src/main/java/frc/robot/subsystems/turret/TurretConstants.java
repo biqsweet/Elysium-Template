@@ -7,15 +7,20 @@ import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderFactory;
 import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
+import frc.lib.generic.simulation.mechanisms.Component3d;
 
 public class TurretConstants extends GenericSubsystem {
     protected static final Motor TURRET_MOTOR = MotorFactory.createTalonFX("TURRET_MOTOR", 106);
     protected static final Encoder TURRET_ENCODER = EncoderFactory.createCanCoder("TURRET_MOTOR", 107);
     protected static final Motor SECOND_TURRET_MOTOR = MotorFactory.createTalonFX("SECOND_TURRET_MOTOR", 108);
 
-    protected static final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(720);
-    protected static final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(-720);
-    protected static final double K_P = 40;
+    protected static final Component3d TURRET_POSE_3D = new Component3d(
+            "TURRET_MECHANISM",
+            0,
+            0,
+            0.5
+    );
+    protected static final Rotation2d TURRET_PITCH = Rotation2d.fromDegrees(0);
 
     protected static final double HUB_X = 8;
     protected static final double HUB_Y = 4;

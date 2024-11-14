@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
-import static frc.robot.subsystems.intake.IntakeArmConstants.INTAKE_ARM_MOTOR;
+import static frc.robot.subsystems.intake.IntakeArmConstants.*;
 
 
 public class IntakeArm extends GenericSubsystem {
@@ -20,6 +20,9 @@ public class IntakeArm extends GenericSubsystem {
 
     public Command stop() {
         return Commands.runOnce(INTAKE_ARM_MOTOR::stopMotor);
+    @Override
+    public void periodic() {
+        INTAKE_ARM_POSE_3D.updateComponent(getCurrentIntakeArmPosition(), INTAKE_ARM_YAW);
     }
 
     private Rotation2d getCurrentPosition() {

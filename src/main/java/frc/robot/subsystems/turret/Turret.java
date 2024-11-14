@@ -27,8 +27,17 @@ public class Turret extends GenericSubsystem {
         return Rotation2d.fromRotations(TURRET_MOTOR.getSystemPosition());
     }
 
-    private void setTargetPosition(Rotation2d targetPosition) {
-        pController(targetPosition, Rotation2d.fromDegrees(TURRET_MOTOR.getSystemPosition()));
+    @Override
+    public void periodic() {
+        TURRET_POSE_3D.updateComponent(TURRET_PITCH, getCurrentTurretPosition());
+        //todo: instead of initializing a new rotation2d object every loop, pass a predefined rotation2d object with the value of 0 V
+    }
+
+    /**
+     * @Units - in rotations
+     */
+    private void setTargetPosition(double targetPosition) {
+        setAndOptimizeOutput(targetPosition, getCurrentTurretPosition().getRotations());
     }
 
     private void pController(Rotation2d targetPosition, Rotation2d currentPosition) {

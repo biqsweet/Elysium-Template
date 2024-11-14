@@ -6,6 +6,7 @@ import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderFactory;
 import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
+import frc.lib.generic.simulation.mechanisms.Component3d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
 
@@ -16,6 +17,13 @@ public class IntakeArmConstants {
     private static final Rotation2d MAXIMUM_ANGLE = Rotation2d.fromDegrees(90);
     private static final Rotation2d MINIMUM_ANGLE = Rotation2d.fromDegrees(25);
 
+    protected static final Component3d INTAKE_ARM_POSE_3D = new Component3d(
+            "INTAKE_ARM_MECHANISM",
+            -0.35,
+            0,
+            0.28
+    );
+    protected static final Rotation2d INTAKE_ARM_YAW = Rotation2d.fromDegrees(0);
 
     static {
         configureIntakeArmMotor();
