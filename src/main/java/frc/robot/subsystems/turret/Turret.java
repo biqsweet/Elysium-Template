@@ -22,11 +22,15 @@ public class Turret extends GenericSubsystem {
         return Commands.run(() -> TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4), this);
     } //todo: is this a test method? if so name it accordingly. V
 
-        return Commands.run(() -> setTargetPosition(angleToHub), this);
+    /**
+     * @param position - in rotations
+     */
+    public Command setTurretToPosition(double position) { //todo: Don't use numbers in function names V
+        return Commands.run(() -> setTargetPosition(position), this);  //todo: weird spacing V
     }
 
     public Command stop() {
-        return Commands.runOnce(TURRET_MOTOR::stopMotor);
+        return Commands.runOnce(TURRET_MOTOR::stopMotor, this); //todo: requirement where? V
     }
 
     public Rotation2d getCurrentTurretPosition() {
