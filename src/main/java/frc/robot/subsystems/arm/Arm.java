@@ -6,20 +6,21 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
+import static frc.robot.subsystems.arm.ArmConstants.ARM_MOTOR;
 import static frc.robot.subsystems.arm.ArmConstants.ARM_POSE_3D;
 import static frc.robot.subsystems.arm.ArmConstants.ARM_MOTOR;
 
 public class Arm extends GenericSubsystem {
-    public Command setArmPosition45() {
-        return Commands.run(() -> setTargetPosition(true), this);
+    /**
+     * @param position - in rotations
+     */
+    public Command setArmPosition(double position) {
+        return Commands.run(() -> ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, position), this);
     }
 
-    public Command setArmPosition10() {
-        return Commands.run(() -> setTargetPosition(false), this);
-    }
 
     public Command stop() {
-        return Commands.runOnce(ARM_MOTOR::stopMotor);
+        return Commands.runOnce(ARM_MOTOR::stopMotor, this);  //todo:  requires what? V
     }
 
     @Override
