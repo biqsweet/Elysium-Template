@@ -9,19 +9,19 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import static frc.robot.subsystems.intake.IntakeConstants.INTAKE_MOTOR;
 
 public class Intake extends GenericSubsystem {
-    public Command setIntakeVoltage(boolean isInverted) {
-        return Commands.run(() -> setVoltage(isInverted), this);
+    public Command setIntakeVoltage(double voltage) {
+        return Commands.run(() -> setVoltage(voltage), this);
     }
 
     public Command stop() {
-        return Commands.runOnce(INTAKE_MOTOR::stopMotor);
+        return Commands.runOnce(INTAKE_MOTOR::stopMotor, this);  //todo:  reuqirement what? V
     }
 
     private Rotation2d getCurrentPosition() {
         return Rotation2d.fromRotations(INTAKE_MOTOR.getSystemPosition());
     }
 
-    private void setVoltage(boolean isInverted) {
-        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? 4 : -4);
+    private void setVoltage(double voltage) {
+        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage); //todo: input a double instead of a bool. V
     }
 }

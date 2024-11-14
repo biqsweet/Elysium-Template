@@ -9,19 +9,19 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import static frc.robot.subsystems.verticalconveyor.VerticalConveyorConstants.CONVEYOR_MOTOR;
 
 public class VerticalConveyor extends GenericSubsystem {
-    public Command setConveyorVoltage(boolean isInverted) {
-        return Commands.run(() -> setVoltage(isInverted), this);
+    public Command setConveyorVoltage(double voltage) {
+        return Commands.run(() -> setVoltage(voltage), this);
     }
 
     public Command stop() {
-        return Commands.runOnce(CONVEYOR_MOTOR::stopMotor);
+        return Commands.runOnce(CONVEYOR_MOTOR::stopMotor, this);  //todo: requires who? V
     }
 
     private Rotation2d getCurrentPosition() {
         return Rotation2d.fromRotations(CONVEYOR_MOTOR.getSystemPosition());
     }
 
-    private void setVoltage(boolean isInverted) {
-        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, isInverted ? 4 : -4);
+    private void setVoltage(double voltage) {
+        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage);  //todo: Nuh uh. Let the user input voltage instead of a boolean. V
     }
 }
