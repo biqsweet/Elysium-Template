@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
-
-import java.util.function.DoubleSupplier;
+import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static frc.robot.subsystems.turret.TurretConstants.*;
@@ -54,20 +53,16 @@ public class Turret extends GenericSubsystem {
      * @Units - in rotations
      */
     private double autoAim() {
-        final DoubleSupplier deltaX = () -> HUB_POSITION.getX() - POSE_ESTIMATOR.getCurrentPose().getX();
-        final DoubleSupplier deltaY = () -> HUB_POSITION.getY() - POSE_ESTIMATOR.getCurrentPose().getY();
-
         final Translation2d robotPose = POSE_ESTIMATOR.getCurrentPose().getTranslation();
         final Translation2d diff = HUB_POSITION.minus(robotPose);
 
         double degreeToHub = Units.radiansToRotations(Math.atan2(diff.getY(), diff.getX()));
 
-        if (diff.getX() < 0) {
-            return degreeToHub += 0.5;
-        } else {
-            return degreeToHub;
-        }
+        Logger.recordOutput("distance to hub", diff);
+        Logger.recordOutput("robot pose", robotPose);
+        Logger.recordOutput("degree to hub", degreeToHub);
 
+        return degreeToHub;
         //todo: cool impl. however, you should use the conventional Translation2d to get the angle between two poses like so:
         //  diff = translation1.minus(translation2
         // return atan2(diff#getY, diff#getX);
