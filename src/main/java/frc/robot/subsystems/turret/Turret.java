@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
-import org.littletonrobotics.junction.Logger;
 
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
 import static frc.robot.subsystems.turret.TurretConstants.*;
@@ -22,7 +21,7 @@ public class Turret extends GenericSubsystem {
     } //todo: is this a test method? if so name it accordingly. V
 
     /**
-     * @param position - in rotations
+     * @param position in rotations
      */
     public Command setTurretToPosition(double position) { //todo: Don't use numbers in function names V
         return Commands.run(() -> setTargetPosition(position), this);  //todo: weird spacing V
@@ -43,33 +42,24 @@ public class Turret extends GenericSubsystem {
     }
 
     /**
-     * @Units - in rotations
+     * @Units in rotations
      */
     private void setTargetPosition(double targetPosition) {
         setAndOptimizeOutput(targetPosition, getCurrentTurretPosition().getRotations());
     }
 
-    /**
-     * @Units - in rotations
-     */
     private double autoAim() {
         final Translation2d robotPose = POSE_ESTIMATOR.getCurrentPose().getTranslation();
-        final Translation2d diff = HUB_POSITION.minus(robotPose);
+        final Translation2d distanceToHub = HUB_POSITION.minus(robotPose);
 
-        double degreeToHub = Units.radiansToRotations(Math.atan2(diff.getY(), diff.getX()));
-
-        Logger.recordOutput("distance to hub", diff);
-        Logger.recordOutput("robot pose", robotPose);
-        Logger.recordOutput("degree to hub", degreeToHub);
-
-        return degreeToHub;
+        return Units.radiansToRotations(Math.atan2(distanceToHub.getY(), distanceToHub.getX()));
         //todo: cool impl. however, you should use the conventional Translation2d to get the angle between two poses like so:
         //  diff = translation1.minus(translation2
         // return atan2(diff#getY, diff#getX);
     }
 
     /**
-     * @Units - in rotations
+     * @Units in rotations
      */
     private void setAndOptimizeOutput(double targetPosition, double currentPosition) {
         //todo: horrible name for a function. describe what it is DOING, not how. V
@@ -77,7 +67,7 @@ public class Turret extends GenericSubsystem {
     }
 
     /**
-     * @Units - in rotations
+     * @Units in rotations
      */
     private double optimize(double targetPosition, double currentPosition) {
         final double error = targetPosition - currentPosition;

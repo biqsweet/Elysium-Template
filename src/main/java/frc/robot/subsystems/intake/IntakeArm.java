@@ -11,7 +11,7 @@ import static frc.robot.subsystems.intake.IntakeArmConstants.*;
 
 public class IntakeArm extends GenericSubsystem {
     /**
-     * @param position - in rotations
+     * @param position in rotations
      */
     public Command setIntakeArmPosition(double position) {
         return Commands.run(() -> INTAKE_ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, position), this);
@@ -25,15 +25,16 @@ public class IntakeArm extends GenericSubsystem {
     public void periodic() {
         INTAKE_ARM_POSE_3D.updateComponent(getCurrentIntakeArmPosition(), INTAKE_ARM_YAW);
     }
+    //todo: instead of initializing a new rotation2d object every loop, pass a predefined rotation2d object with the value of 0 V
 
     private Rotation2d getCurrentIntakeArmPosition() {
         return Rotation2d.fromRotations(INTAKE_ARM_MOTOR.getSystemPosition());
     }
 
-    /**
-     * @param position - in rotations
-     */
-    private void setTargetPosition(double position) {
-        INTAKE_ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, position); //todo get a double not a boolean V
-    }
+//    /**
+//     * @param position in rotations
+//     */
+//    private void setTargetPosition(double position) {
+//        INTAKE_ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, position); //todo get a double not a boolean V
+//    }
 }

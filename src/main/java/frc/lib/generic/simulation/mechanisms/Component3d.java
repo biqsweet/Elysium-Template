@@ -31,7 +31,7 @@ public class Component3d { //todo: better name V
                 new Pose3d(poseTranslation,
                         new Rotation3d(0,
                                 pitch.getRadians(),
-                                yaw.getRadians()
-                        ))); //todo: goofy ahh conventions bruh. fix ur spacings. Create the translation part of the pose3d only once, as these DON'T change throughout the class. V
+                                yaw.getRadians())));
     }
+    //todo: goofy ahh conventions bruh. fix ur spacings. Create the translation part of the pose3d only once, as these DON'T change throughout the class. V
 }

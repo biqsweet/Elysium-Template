@@ -12,7 +12,7 @@ import static frc.robot.subsystems.arm.ArmConstants.ARM_POSE_3D;
 
 public class Arm extends GenericSubsystem {
     /**
-     * @param position - in rotations
+     * @param position in rotations
      */
     public Command setArmPosition(double position) {
         return Commands.run(() -> ARM_MOTOR.setOutput(MotorProperties.ControlMode.POSITION, position), this);

@@ -23,11 +23,12 @@ public class TurretConstants extends GenericSubsystem {
     );
     protected static final Rotation2d TURRET_PITCH = Rotation2d.fromDegrees(0);
 
-    protected static final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(359);
-    protected static final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(-359);
+    protected static final Rotation2d MAX_ANGLE = Rotation2d.fromDegrees(720);
+    protected static final Rotation2d MIN_ANGLE = Rotation2d.fromDegrees(-720);
     protected static final double K_P = 10;
 
-    protected static final Translation2d HUB_POSITION = new Translation2d(8, 4);//todo: Express as a translation in 2d space instead. V
+    protected static final Translation2d HUB_POSITION = new Translation2d(8, 4);
+    //todo: Express as a translation in 2d space instead. V
 
     static {
         configureTurretMotor();
