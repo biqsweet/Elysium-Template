@@ -17,10 +17,11 @@ public class FlywheelConstants {
         final MotorConfiguration flywheelMotorConfiguration = new MotorConfiguration();  //todo: final./ V
 
         FLYWHEEL_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
+        FLYWHEEL_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
 
-        flywheelMotorConfiguration.simulationSlot = new MotorProperties.Slot(1, 0, 0, 0, 0, 0);
+        flywheelMotorConfiguration.simulationSlot = new MotorProperties.Slot(10, 0, 0, 0, 0, 0);
         flywheelMotorConfiguration.idleMode = MotorProperties.IdleMode.COAST;
-        flywheelMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.FLYWHEEL, DCMotor.getFalcon500(1), 150, 0.02);
+        flywheelMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.FLYWHEEL, DCMotor.getFalcon500(1), 50, 0.02);
 
         FLYWHEEL_MOTOR.configure(flywheelMotorConfiguration);
     }

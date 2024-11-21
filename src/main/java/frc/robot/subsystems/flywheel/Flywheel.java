@@ -17,8 +17,8 @@ public class Flywheel extends GenericSubsystem {
         return Commands.runOnce(FLYWHEEL_MOTOR::stopMotor, this);  //todo: requirement V
     }
 
-    private Rotation2d getCurrentPosition() {
-        return Rotation2d.fromRotations(FLYWHEEL_MOTOR.getSystemPosition());
+    public Rotation2d getCurrentVelocity() {
+        return Rotation2d.fromRotations(FLYWHEEL_MOTOR.getMotorVelocity());
     }
 
     private void setVoltage(double voltage) {
