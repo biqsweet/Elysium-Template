@@ -1,14 +1,12 @@
 package frc.robot.subsystems.arm;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderFactory;
 import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.Component3d;
-import frc.lib.generic.simulation.mechanisms.Object3d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
 
@@ -25,7 +23,7 @@ public class ArmConstants {
 
     private static final Rotation2d
             MAXIMUM_ANGLE = Rotation2d.fromDegrees(90),
-            MINIMUM_ANGLE = Rotation2d.fromDegrees(25);  //todo: consider splatting these together V
+            MINIMUM_ANGLE = Rotation2d.fromDegrees(25);
 
     static {
         configureArmMotor();
