@@ -25,6 +25,8 @@ public class GlobalConstants {
     public static final double GRAVITY = 9.80665;
     public static final double MINIMUM_ACCELERATION_FOR_COLLISION = 25; //todo: Tune
 
+    public static final Translation3d HUB_POSITION = new Translation3d(8, 4,2);
+
     public static final double FIELD_LENGTH_METRES = 14.56;
     public static final double GRAVITY_FORCE = 9.806;
 
