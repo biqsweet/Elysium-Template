@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.util.Controller;
-import frc.robot.commands.ShooterCommands;
+import frc.robot.commands.ShootBall;
 import frc.robot.poseestimation.poseestimator.PoseEstimator;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.flywheel.Flywheel;
@@ -33,6 +33,7 @@ public class RobotContainer {
     public static final Turret TURRET = new Turret();
     public static final Flywheel FLYWHEEL = new Flywheel();
     public static final VerticalConveyor CONVEYOR = new VerticalConveyor();
+    public static final ShootBall SHOOT_BALL = new ShootBall();
 
     public static final BuiltInAccelerometer ROBORIO_ACCELEROMETER = new BuiltInAccelerometer();
 
