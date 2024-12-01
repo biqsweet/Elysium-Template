@@ -89,6 +89,9 @@
           "Arm": {
             "open": true
           },
+          "FLYWHEEL_MOTOR": {
+            "open": true
+          },
           "open": true
         },
         "RL_STEER_MOTOR": {

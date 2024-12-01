@@ -9,10 +9,9 @@ import org.littletonrobotics.junction.Logger;
 /**
  * A Pose3d object that can change in rotation
  */
-public class Component3d { //todo: better name V
+public class Component3d {
     private final String name;
     private final Translation3d poseTranslation;
-    //todo: consider splatting these together V
 
 
     /**
@@ -27,11 +26,10 @@ public class Component3d { //todo: better name V
      * Updates the mechanism's angle and target angle, then logs the Pose3d object.
      */
     public void updateComponent(Rotation2d pitch, Rotation2d yaw) {
-        Logger.recordOutput("Pose3d/" + name,
+        Logger.recordOutput("Component3d/" + name,
                 new Pose3d(poseTranslation,
                         new Rotation3d(0,
                                 pitch.getRadians(),
                                 yaw.getRadians())));
     }
-    //todo: goofy ahh conventions bruh. fix ur spacings. Create the translation part of the pose3d only once, as these DON'T change throughout the class. V
 }

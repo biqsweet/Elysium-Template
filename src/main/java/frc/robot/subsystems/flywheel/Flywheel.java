@@ -10,18 +10,18 @@ import static frc.robot.subsystems.flywheel.FlywheelConstants.FLYWHEEL_MOTOR;
 
 public class Flywheel extends GenericSubsystem {
     public Command setFlywheelVoltage(double voltage) {
-        return Commands.run(() -> setVoltage(voltage), this);  //todo:  requires wHO?! V
+        return Commands.run(() -> setVoltage(voltage), this);
     }
 
     public Command stop() {
-        return Commands.runOnce(FLYWHEEL_MOTOR::stopMotor, this);  //todo: requirement V
+        return Commands.runOnce(FLYWHEEL_MOTOR::stopMotor, this);
     }
 
     public Rotation2d getCurrentVelocity() {
-        return Rotation2d.fromRotations(FLYWHEEL_MOTOR.getMotorVelocity());
+        return Rotation2d.fromRotations(FLYWHEEL_MOTOR.getSystemVelocity());
     }
 
     private void setVoltage(double voltage) {
-        FLYWHEEL_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage);  //todo: No. Use variables instead. V
+        FLYWHEEL_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage);
     }
 }

@@ -14,7 +14,7 @@ public class FlywheelConstants {
     }
 
     private static void configureFlywheelMotor() {
-        final MotorConfiguration flywheelMotorConfiguration = new MotorConfiguration();  //todo: final./ V
+        final MotorConfiguration flywheelMotorConfiguration = new MotorConfiguration();
 
         FLYWHEEL_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
         FLYWHEEL_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);

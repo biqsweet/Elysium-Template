@@ -21,8 +21,10 @@ public class Arm extends GenericSubsystem {
     }
     //todo: Instead of creating two methods to do the same thing, introduce a variable into the function to allow any output the end user desires. V
 
+
     public Command stop() {
         return Commands.runOnce(ARM_MOTOR::stopMotor, this);  //todo:  requires what? V
+        return Commands.runOnce(ARM_MOTOR::stopMotor, this);
     }
 
     @Override

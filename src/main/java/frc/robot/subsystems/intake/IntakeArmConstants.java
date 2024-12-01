@@ -36,7 +36,7 @@ public class IntakeArmConstants {
     }
 
     private static void configureIntakeArmMotor() {
-        final MotorConfiguration intakeArmMotorConfiguration = new MotorConfiguration(); //todo; FInal V
+        final MotorConfiguration intakeArmMotorConfiguration = new MotorConfiguration();
 
         intakeArmMotorConfiguration.idleMode = MotorProperties.IdleMode.BRAKE;
 

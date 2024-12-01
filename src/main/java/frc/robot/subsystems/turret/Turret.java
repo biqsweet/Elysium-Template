@@ -14,22 +14,22 @@ import static frc.robot.subsystems.turret.TurretConstants.*;
 
 public class Turret extends GenericSubsystem {
     public Command autoAimTurret() {
-        return Commands.run(() -> setTargetPosition(autoAim()), this);//todo: fix weird spacing. V
+        return Commands.run(() -> setTargetPosition(autoAim()), this);
     }
 
     public Command spinTurret() {
-        return Commands.run(() -> TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 4), this);
-    } //todo: is this a test method? if so name it accordingly. V
+        return Commands.run(() -> TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, 0.5), this);
+    }
 
     /**
      * @param position in rotations
      */
-    public Command setTurretToPosition(double position) { //todo: Don't use numbers in function names V
-        return Commands.run(() -> setTargetPosition(position), this);  //todo: weird spacing V
+    public Command setTurretToPosition(double position) {
+        return Commands.run(() -> setTargetPosition(position), this);
     }
 
     public Command stop() {
-        return Commands.runOnce(TURRET_MOTOR::stopMotor, this); //todo: requirement where? V
+        return Commands.runOnce(TURRET_MOTOR::stopMotor, this);
     }
 
     public Rotation2d getCurrentTurretPosition() {
@@ -39,7 +39,6 @@ public class Turret extends GenericSubsystem {
     @Override
     public void periodic() {
         TURRET_POSE_3D.updateComponent(TURRET_PITCH, getCurrentTurretPosition());
-        //todo: instead of initializing a new rotation2d object every loop, pass a predefined rotation2d object with the value of 0 V
     }
 
     /**
@@ -54,16 +53,12 @@ public class Turret extends GenericSubsystem {
         final Translation2d distanceToHub = HUB_POSITION.toTranslation2d().minus(robotPose);
 
         return Units.radiansToRotations(Math.atan2(distanceToHub.getY(), distanceToHub.getX()));
-        //todo: cool impl. however, you should use the conventional Translation2d to get the angle between two poses like so:
-        //  diff = translation1.minus(translation2
-        // return atan2(diff#getY, diff#getX);
     }
 
     /**
      * @Units in rotations
      */
     private void setAndOptimizeOutput(double targetPosition, double currentPosition) {
-        //todo: horrible name for a function. describe what it is DOING, not how. V
         TURRET_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, optimize(targetPosition, currentPosition));
     }
 
