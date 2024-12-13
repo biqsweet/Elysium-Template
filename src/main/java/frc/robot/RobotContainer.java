@@ -34,7 +34,6 @@ public class RobotContainer {
     public static final Flywheel FLYWHEEL = new Flywheel();
     public static final VerticalConveyor CONVEYOR = new VerticalConveyor();
     public static final ShootBall SHOOT_BALL = new ShootBall();
-
     public static final BuiltInAccelerometer ROBORIO_ACCELEROMETER = new BuiltInAccelerometer();
 
     private final Controller driveController = new Controller(0);
@@ -50,10 +49,10 @@ public class RobotContainer {
         //B=X on keyboard
         //X=C on keyboard
         //Y=V on keyboard
-        driveController.getButton(Controller.Inputs.A).toggleOnTrue(ShooterCommands.stopAllSystems());
-        driveController.getButton(Controller.Inputs.B).toggleOnTrue(ShooterCommands.receiveBall());
-        driveController.getButton(Controller.Inputs.X).onTrue(ShooterCommands.removeBall());
-        driveController.getButton(Controller.Inputs.Y).onTrue(ShooterCommands.aimAndShoot());
+        driveController.getButton(Controller.Inputs.A).toggleOnTrue(ARM.autoAimArm().alongWith(TURRET.autoAimTurret(),FLYWHEEL.setFlywheelVoltage(4)));
+        driveController.getButton(Controller.Inputs.B).onTrue(ARM.setArmPosition(0.1));
+        driveController.getButton(Controller.Inputs.X).onTrue(SHOOT_BALL);
+        driveController.getButton(Controller.Inputs.Y).onTrue(SHOOT_BALL.stopBall());
 
         DoubleSupplier translationSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_Y), 0.05);
         DoubleSupplier strafeSupplier = () -> MathUtil.applyDeadband(-driveController.getRawAxis(LEFT_X), 0.05);
