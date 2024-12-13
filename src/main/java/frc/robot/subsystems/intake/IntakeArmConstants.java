@@ -16,10 +16,11 @@ public class IntakeArmConstants {
 
     protected static final Component3d INTAKE_ARM_POSE_3D = new Component3d(
             "INTAKE_ARM_MECHANISM",
-            -0.35,
+            0.212,
             0,
-            0.28
+            0.165
     );
+
     protected static final Rotation2d INTAKE_ARM_YAW = Rotation2d.fromDegrees(0);
     private static final Rotation2d
             MAXIMUM_ANGLE = Rotation2d.fromDegrees(90),
@@ -44,7 +45,7 @@ public class IntakeArmConstants {
         INTAKE_ARM_MOTOR.setupSignalUpdates(MotorSignal.VELOCITY);
         INTAKE_ARM_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
 
-        intakeArmMotorConfiguration.simulationSlot = new MotorProperties.Slot(10, 0, 0, 0, 0, 0);
+        intakeArmMotorConfiguration.simulationSlot = new MotorProperties.Slot(100, 0, 0, 0, 0, 0);
         intakeArmMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 50, 0.5, 0.2, MINIMUM_ANGLE, MAXIMUM_ANGLE, true);
 
         INTAKE_ARM_MOTOR.configure(intakeArmMotorConfiguration);
