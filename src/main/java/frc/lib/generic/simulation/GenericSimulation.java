@@ -25,6 +25,7 @@ public abstract class GenericSimulation {
 
         motor.setupSignalUpdates(MotorSignal.POSITION);
         motor.setupSignalUpdates(MotorSignal.VELOCITY);
+        motor.setupSignalUpdates(MotorSignal.ACCELERATION);
         motor.setupSignalUpdates(MotorSignal.VOLTAGE);
         motor.setupSignalUpdates(MotorSignal.TEMPERATURE);
         motor.setupSignalUpdates(MotorSignal.CLOSED_LOOP_TARGET);
