@@ -2,6 +2,7 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -36,9 +37,13 @@ public class Turret extends GenericSubsystem {
         return Rotation2d.fromRotations(TURRET_MOTOR.getSystemPosition());
     }
 
+    public Rotation2d getTargetTurretPosition() {
+        return Rotation2d.fromRotations(TURRET_MOTOR.getClosedLoopTarget());
+    }
+
     @Override
     public void periodic() {
-        TURRET_POSE_3D.updateComponent(TURRET_PITCH, getCurrentTurretPosition());
+        TURRET_POSE_3D.updateComponent(TURRET_PITCH, getCurrentTurretPosition(),new Translation3d(0,0,0));
     }
 
     /**
