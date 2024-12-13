@@ -14,7 +14,7 @@ public class VerticalConveyor extends GenericSubsystem {
     }
 
     public Command stop() {
-        return Commands.runOnce(CONVEYOR_MOTOR::stopMotor, this);  //todo: requires who? V
+        return Commands.runOnce(CONVEYOR_MOTOR::stopMotor, this);
     }
 
     private Rotation2d getCurrentPosition() {
@@ -22,6 +22,6 @@ public class VerticalConveyor extends GenericSubsystem {
     }
 
     private void setVoltage(double voltage) {
-        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage);  //todo: Nuh uh. Let the user input voltage instead of a boolean. V
+        CONVEYOR_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage);
     }
 }
