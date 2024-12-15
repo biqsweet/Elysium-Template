@@ -32,20 +32,10 @@
       "/SmartDashboard/Mechanisms/Left Flywheel": "Mechanism2d",
       "/SmartDashboard/Mechanisms/RIGHT_FLYWHEEL": "Mechanism2d",
       "/SmartDashboard/Mechanisms/Right Flywheel": "Mechanism2d",
-      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
+      "/SmartDashboard/armMechanism2d": "Mechanism2d"
     },
     "windows": {
-      "/SmartDashboard/Debug-Field": {
-        "bottom": 1476,
-        "height": 8.210550308227539,
-        "left": 150,
-        "right": 2961,
-        "top": 79,
-        "width": 16.541748046875,
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
         "bottom": 1476,
         "height": 8.210550308227539,
@@ -57,13 +47,7 @@
           "visible": true
         }
       },
-      "/SmartDashboard/VisionSystemSim-main/Sim Field": {
-        "bottom": 1476,
-        "height": 8.210550308227539,
-        "left": 150,
-        "right": 2961,
-        "top": 79,
-        "width": 16.541748046875,
+      "/SmartDashboard/armMechanism2d": {
         "window": {
           "visible": true
         }
@@ -83,9 +67,6 @@
           "open": true
         },
         "Motors": {
-          "ARM_MOTOR": {
-            "open": true
-          },
           "Arm": {
             "open": true
           },
@@ -123,6 +104,15 @@
             "open": true
           },
           "flywheel": {
+            "open": true
+          },
+          "open": true
+        },
+        "armMechanism2d": {
+          "armMechanism": {
+            "armLigament": {
+              "open": true
+            },
             "open": true
           },
           "open": true
