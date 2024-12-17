@@ -15,7 +15,6 @@ public class SingleJointedArmMechanism2d {
 
     public SingleJointedArmMechanism2d(double armLengthMeters, Rotation2d minimumAngle, Rotation2d maximumAngle) {
         this.armMechanism = new Mechanism2d(10, 10);
-
         MechanismRoot2d root = armMechanism.getRoot("armMechanism", 5, 5);
         this.armLigament = new MechanismLigament2d("armLigament", armLengthMeters, minimumAngle.getDegrees(), 3, new Color8Bit(0, 0, 255));
         this.targetAngle = new MechanismLigament2d("targetAngle", armLengthMeters, minimumAngle.getDegrees(), 3, new Color8Bit(144, 144, 144));
