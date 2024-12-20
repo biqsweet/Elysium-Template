@@ -14,7 +14,7 @@ public class IntakeConstants {
     }
 
     private static void configureIntakeMotor() {
-        final MotorConfiguration intakeMotorConfiguration = new MotorConfiguration(); //todo: final V
+        final MotorConfiguration intakeMotorConfiguration = new MotorConfiguration();
 
         intakeMotorConfiguration.inverted = true;
         intakeMotorConfiguration.simulationSlot = new MotorProperties.Slot(1, 0, 0, 0, 0, 0);

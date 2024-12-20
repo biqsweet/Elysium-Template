@@ -14,7 +14,7 @@ public class VerticalConveyorConstants {
     }
 
     private static void configureConveyor() {
-        final MotorConfiguration conveyorMotorConfiguration = new MotorConfiguration();  //todo: If it can be final V
+        final MotorConfiguration conveyorMotorConfiguration = new MotorConfiguration();
 
         CONVEYOR_MOTOR.setupSignalUpdates(MotorSignal.VOLTAGE);
 

@@ -14,7 +14,7 @@ public class Intake extends GenericSubsystem {
     }
 
     public Command stop() {
-        return Commands.runOnce(INTAKE_MOTOR::stopMotor, this);  //todo:  reuqirement what? V
+        return Commands.runOnce(INTAKE_MOTOR::stopMotor, this);
     }
 
     private Rotation2d getCurrentPosition() {
@@ -22,6 +22,6 @@ public class Intake extends GenericSubsystem {
     }
 
     private void setVoltage(double voltage) {
-        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage); //todo: input a double instead of a bool. V
+        INTAKE_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage);
     }
 }

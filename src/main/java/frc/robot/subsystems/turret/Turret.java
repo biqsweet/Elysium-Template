@@ -43,7 +43,7 @@ public class Turret extends GenericSubsystem {
 
     @Override
     public void periodic() {
-        TURRET_POSE_3D.updateComponent(TURRET_PITCH, getCurrentTurretPosition(),new Translation3d(0,0,0));
+        TURRET_POSE_3D.updateComponent(TURRET_PITCH, getCurrentTurretPosition(), new Translation3d(0, 0, 0));
     }
 
     /**
