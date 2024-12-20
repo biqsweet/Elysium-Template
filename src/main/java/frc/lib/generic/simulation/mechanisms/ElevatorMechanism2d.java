@@ -8,7 +8,6 @@ import org.littletonrobotics.junction.Logger;
 import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
 import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.getRoot;
 
-
 public class ElevatorMechanism2d {
     private final String name;
     private final Mechanism2d elevatorMechanism;
@@ -30,6 +29,7 @@ public class ElevatorMechanism2d {
 
         createCurrent(elevatorLength);
         createTarget(elevatorLength);
+        createOutline();
     }
 
     public void updateCurrentMechanismPosition(double newPosY) {
@@ -46,7 +46,7 @@ public class ElevatorMechanism2d {
         return elevatorMechanism;
     }
 
-    public void createCurrent(double elevatorLength) {
+    private void createCurrent(double elevatorLength) {
         this.currentRightLigament = new MechanismLigament2d("elevatorRightLigament", elevatorLength, 0, DEFAULT_LINE_WIDTH, RED);
         this.currentLeftLigament = new MechanismLigament2d("elevatorLeftLigament", elevatorLength, 180, DEFAULT_LINE_WIDTH, RED);
 
@@ -54,7 +54,7 @@ public class ElevatorMechanism2d {
         root.append(currentLeftLigament);
     }
 
-    public void createTarget(double elevatorLength) {
+    private void createTarget(double elevatorLength) {
         this.targetRightLigament = new MechanismLigament2d("targetRightLigament", elevatorLength, 0, DEFAULT_LINE_WIDTH, BLUE);
         this.targetLeftLigament = new MechanismLigament2d("targetLeftLigament", elevatorLength, 180, DEFAULT_LINE_WIDTH, BLUE);
 
@@ -62,7 +62,7 @@ public class ElevatorMechanism2d {
         targetRoot.append(targetLeftLigament);
     }
 
-    public void createOutline() {
+    private void createOutline() {
         MechanismRoot2d outlineRoot = elevatorMechanism.getRoot("outlineRoot", 1, 1);
 
         MechanismLigament2d
