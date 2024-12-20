@@ -7,9 +7,9 @@ public class MechanismConstants {
     protected static int
             DEFAULT_ROOT_X = 5,
             DEFAULT_ROOT_Y = 5,
-            DEFAULT_CANVAS_WIDTH = 5,
-            DEFAULT_CANVAS_HEIGHT = 5,
-            DEFAULT_LINE_WIDTH = 5;
+            DEFAULT_CANVAS_WIDTH = 10,
+            DEFAULT_CANVAS_HEIGHT = 10,
+            DEFAULT_LINE_WIDTH = 3;
 
     protected static double
             DEFAULT_ARROW_TIP1 = 135,
