@@ -1,146 +1,89 @@
 package frc.lib.generic.simulation.mechanisms;
 
-
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color8Bit;
+import org.littletonrobotics.junction.Logger;
 
-import java.util.List;
+import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
+import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.getRoot;
 
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.BOTTOM_WING_DOWNWARDS_ANGLE;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.BOTTOM_WING_POINT_ANGLE;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.MECHANISM_LINE_WIDTH;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.NEGATIVE_VELOCITY_COLOUR;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.NO_VELOCITY_COLOUR;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.POSITIVE_VELOCITY_COLOUR;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.SPEED_ARROW_LENGTH_SCALAR;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.TARGET_COLOUR;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.TOP_WING_POINT_ANGLE;
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.TOP_WING_UPWARDS_ANGLE;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.generateArrowLigaments;
-
-/**
- * A Mechanism2d object to display the current velocity and target velocity of a mechanism.
- */
 public class SpeedMechanism2d {
-    private final String key;
+    private final String name;
+    private final Mechanism2d speedMechanism;
+    private final MechanismRoot2d root;
+    private MechanismLigament2d
+            currentSpeedLigament,
+            targetSpeedLigament,
+            currentArrowTip1,
+            currentArrowTip2,
+            targetArrowTip1,
+            targetArrowTip2;
 
-    private Mechanism2d mechanism;
+    public SpeedMechanism2d(String name) {
+        this.name = name;
+        this.speedMechanism = new Mechanism2d(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
+        this.root = getRoot("speedMechanismRoot", speedMechanism);
 
-    private MechanismLigament2d currentVelocityLigament;
-    private MechanismLigament2d targetVelocityLigament;
-    private MechanismLigament2d targetVelocityTopArrowLigament;
-    private MechanismLigament2d targetVelocityBottomArrowLigament;
-    private MechanismLigament2d currentVelocityTopArrowLigament;
-    private MechanismLigament2d currentVelocityBottomArrowLigament;
-
-    private final double deadband;
-    private final boolean inverted;
-
-    public SpeedMechanism2d(String key, double maximumDisplayableVelocity, boolean inverted) {
-        this(key, maximumDisplayableVelocity, 0.001, inverted);
+        createCurrent();
+        createTarget();
     }
 
-    public SpeedMechanism2d(String key, double maximumDisplayableVelocity) {
-        this(key, maximumDisplayableVelocity, 0.001, false);
-    }
+    public void updateCurrentMechanismSpeed(double newSpeed) {
+        if (newSpeed < 0) {
+            currentSpeedLigament.setColor(RED);
+            currentArrowTip1.setColor(RED);
+            currentArrowTip2.setColor(RED);
 
-    public SpeedMechanism2d(String key, double maximumDisplayableVelocity, double deadband, boolean inverted) {
-        this.deadband = deadband;
-        this.key = key;
-        this.inverted = inverted;
-
-        initializeMechanism(maximumDisplayableVelocity);
-    }
-
-    /**
-     * Updates the mechanism's velocity and target velocity and logs the Mechanism2d object.
-     *
-     * @param velocity       the current velocity
-     * @param targetVelocity the target velocity
-     */
-    public void updateMechanism(double velocity, double targetVelocity) {
-        setTargetVelocity(targetVelocity);
-        updateMechanism(velocity);
-    }
-
-    /**
-     * Updates the mechanism's velocity and logs the Mechanism2d object.
-     *
-     * @param velocity the current velocity
-     */
-    public void updateMechanism(double velocity) {
-//        velocity = inverted ? -velocity : velocity;
-
-        buildArrowAtLigament(velocity, currentVelocityTopArrowLigament, currentVelocityBottomArrowLigament);
-
-        currentVelocityLigament.setLength(velocity);
-
-        setCurrentLigamentColor(velocityToColor(velocity));
-
-        SmartDashboard.putData("Mechanisms/" + key, mechanism);
-    }
-
-    /**
-     * Sets the target velocity but doesn't log the Mechanism2d object.
-     *
-     * @param targetVelocity the target velocity
-     */
-    public void setTargetVelocity(double targetVelocity) {
-        targetVelocity = inverted ? -targetVelocity : targetVelocity;
-
-        buildArrowAtLigament(targetVelocity, targetVelocityTopArrowLigament, targetVelocityBottomArrowLigament);
-        targetVelocityLigament.setLength(targetVelocity);
-    }
-    //todo: cleanup this file like what the hell was he doing lmfao??
-
-    private void setCurrentLigamentColor(Color8Bit color) {
-        currentVelocityLigament.setColor(color);
-        currentVelocityTopArrowLigament.setColor(color);
-        currentVelocityBottomArrowLigament.setColor(color);
-    }
-
-    private Color8Bit velocityToColor(double velocity) {
-        if (velocity > deadband)
-            return POSITIVE_VELOCITY_COLOUR;
-
-        else if (velocity < -deadband)
-            return NEGATIVE_VELOCITY_COLOUR;
-
-        return NO_VELOCITY_COLOUR;
-    }
-
-    private void buildArrowAtLigament(double velocity, MechanismLigament2d topWing, MechanismLigament2d bottomWing) {
-        if (velocity > deadband) {
-            topWing.setAngle(TOP_WING_POINT_ANGLE);
-            bottomWing.setAngle(BOTTOM_WING_POINT_ANGLE);
-        } else if (velocity < -deadband) {
-            topWing.setAngle(TOP_WING_POINT_ANGLE - 180);
-            bottomWing.setAngle(BOTTOM_WING_POINT_ANGLE - 180);
+            currentArrowTip1.setAngle(DEFAULT_ARROW_TIP1_INVERSE);
+            currentArrowTip2.setAngle(DEFAULT_ARROW_TIP2_INVERSE);
         } else {
-            topWing.setAngle(TOP_WING_UPWARDS_ANGLE);
-            bottomWing.setAngle(BOTTOM_WING_DOWNWARDS_ANGLE);
+            currentSpeedLigament.setColor(GREEN);
+            currentArrowTip1.setColor(GREEN);
+            currentArrowTip2.setColor(GREEN);
+
+            currentArrowTip1.setAngle(DEFAULT_ARROW_TIP1);
+            currentArrowTip2.setAngle(DEFAULT_ARROW_TIP1);
         }
+
+        currentSpeedLigament.setLength(newSpeed);
+        Logger.recordOutput(name, speedMechanism);
     }
 
-    private void initializeMechanism(double maximumDisplayableVelocity) {
-        this.mechanism = new Mechanism2d(2 * maximumDisplayableVelocity, 2 * maximumDisplayableVelocity);
+    public void updateTargetMechanismSpeed(double newTargetSpeed) {
+        if (newTargetSpeed < 0) {
+            targetArrowTip1.setAngle(DEFAULT_ARROW_TIP1_INVERSE);
+            targetArrowTip2.setAngle(DEFAULT_ARROW_TIP2_INVERSE);
+        } else {
+            targetArrowTip1.setAngle(DEFAULT_ARROW_TIP1);
+            targetArrowTip2.setAngle(DEFAULT_ARROW_TIP2);
+        }
 
-        MechanismRoot2d root = mechanism.getRoot("VelocityRoot", maximumDisplayableVelocity, maximumDisplayableVelocity);
+        targetSpeedLigament.setLength(newTargetSpeed);
+        Logger.recordOutput(name, speedMechanism);
+    }
 
-        this.currentVelocityLigament = root.append(new MechanismLigament2d("CurrentVelocityLigament", 0, 0, MECHANISM_LINE_WIDTH, NO_VELOCITY_COLOUR));
-        this.targetVelocityLigament = root.append(new MechanismLigament2d("TargetVelocityLigament", 0, 0, MECHANISM_LINE_WIDTH, TARGET_COLOUR));
+    public Mechanism2d getMechanism() {
+        return speedMechanism;
+    }
 
-        List<MechanismLigament2d> currentLigaments = generateArrowLigaments("CurrentVelocity", NO_VELOCITY_COLOUR, SPEED_ARROW_LENGTH_SCALAR * maximumDisplayableVelocity);
+    private void createCurrent() {
+        currentSpeedLigament = new MechanismLigament2d("currentSpeed", 5, 0, DEFAULT_LINE_WIDTH, GREEN);
+        currentArrowTip1 = new MechanismLigament2d("currentArrowTip1", 1, DEFAULT_ARROW_TIP1, DEFAULT_LINE_WIDTH, GREEN);
+        currentArrowTip2 = new MechanismLigament2d("currentArrowTip2", 1, DEFAULT_ARROW_TIP2, DEFAULT_LINE_WIDTH, GREEN);
 
-        this.currentVelocityTopArrowLigament = currentVelocityLigament.append(currentLigaments.get(0));
-        this.currentVelocityBottomArrowLigament = currentVelocityLigament.append(currentLigaments.get(1));
+        currentSpeedLigament.append(currentArrowTip1);
+        currentSpeedLigament.append(currentArrowTip2);
+        root.append(currentSpeedLigament);
+    }
 
-        List<MechanismLigament2d> targetLigaments = generateArrowLigaments("TargetVelocity", TARGET_COLOUR, SPEED_ARROW_LENGTH_SCALAR * maximumDisplayableVelocity);
+    private void createTarget() {
+        targetSpeedLigament = new MechanismLigament2d("targetSpeed", 5, 0, DEFAULT_LINE_WIDTH, GRAY);
+        targetArrowTip1 = new MechanismLigament2d("targetArrowTip1", 1, DEFAULT_ARROW_TIP1, DEFAULT_LINE_WIDTH, GRAY);
+        targetArrowTip2 = new MechanismLigament2d("targetArrowTip2", 1, DEFAULT_ARROW_TIP2, DEFAULT_LINE_WIDTH, GRAY);
 
-        this.targetVelocityTopArrowLigament = targetVelocityLigament.append(targetLigaments.get(0));
-        this.targetVelocityBottomArrowLigament = targetVelocityLigament.append(targetLigaments.get(1));
+        targetSpeedLigament.append(targetArrowTip1);
+        targetSpeedLigament.append(targetArrowTip2);
+        root.append(targetSpeedLigament);
     }
 }
