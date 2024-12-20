@@ -25,7 +25,7 @@ public class Component3d {
     /**
      * Updates the mechanism's angle and target angle, then logs the Pose3d object.
      */
-    public void updateComponent(Rotation2d pitch, Rotation2d yaw,Translation3d newPosition) {
+    public void updateComponent(Rotation2d pitch, Rotation2d yaw, Translation3d newPosition) {
         Logger.recordOutput("Component3d/" + name,
                 new Pose3d(poseTranslation.plus(newPosition),
                         new Rotation3d(0,
