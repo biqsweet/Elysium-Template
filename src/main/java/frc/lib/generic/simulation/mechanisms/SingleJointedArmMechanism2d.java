@@ -4,39 +4,49 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 import org.littletonrobotics.junction.Logger;
 
+import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
+import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.getRoot;
 
 public class SingleJointedArmMechanism2d {
+    private final String name;
     private final Mechanism2d armMechanism;
-    private final MechanismLigament2d currentAngleLigament;
-    private final MechanismLigament2d targetAngleLigament;
     private final MechanismRoot2d root;
+    private MechanismLigament2d
+            currentAngleLigament,
+            targetAngleLigament;
 
-    public SingleJointedArmMechanism2d(double armLengthMeters, Rotation2d minimumAngle, Rotation2d maximumAngle) {
-        this.armMechanism = new Mechanism2d(10, 10);
+    public SingleJointedArmMechanism2d(String name, double armLength, Rotation2d minimumAngle, Rotation2d maximumAngle) {
+        this.name = name;
+        this.armMechanism = new Mechanism2d(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
+        this.root = getRoot("armRoot", armMechanism);
 
-        this.root = armMechanism.getRoot("armMechanism", 5, 5);
-
-        this.currentAngleLigament = new MechanismLigament2d("armLigament", armLengthMeters, minimumAngle.getDegrees(), 3, new Color8Bit(0, 0, 255));
-        this.targetAngleLigament = new MechanismLigament2d("targetAngleLigament", armLengthMeters, minimumAngle.getDegrees(), 3, new Color8Bit(144, 144, 144));
-
-        root.append(currentAngleLigament);
-        root.append(targetAngleLigament);
+        createCurrent(armLength, minimumAngle);
+        createTarget(armLength, minimumAngle);
     }
 
     public void updateCurrentMechanismAngle(Rotation2d newAngle) {
         currentAngleLigament.setAngle(newAngle);
-        Logger.recordOutput("armMechanism2d", armMechanism);
+        Logger.recordOutput(name, armMechanism);
     }
 
     public void updateTargetMechanismAngle(Rotation2d newTargetAngle) {
         targetAngleLigament.setAngle(newTargetAngle);
-        Logger.recordOutput("armMechanism2d", armMechanism);
+        Logger.recordOutput(name, armMechanism);
     }
 
     public Mechanism2d getMechanism() {
         return armMechanism;
+    }
+
+    private void createCurrent(double armLength, Rotation2d minimumAngle) {
+        currentAngleLigament = new MechanismLigament2d("armLigament", armLength, minimumAngle.getDegrees(), DEFAULT_LINE_WIDTH, BLUE);
+        root.append(currentAngleLigament);
+    }
+
+    private void createTarget(double armLength, Rotation2d minimumAngle) {
+        targetAngleLigament = new MechanismLigament2d("targetArmLigament", armLength, minimumAngle.getDegrees(), DEFAULT_LINE_WIDTH, GRAY);
+        root.append(targetAngleLigament);
     }
 }
