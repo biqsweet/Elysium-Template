@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import org.littletonrobotics.junction.Logger;
 
 import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.getRoot;
+import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createDefaultRoot;
 
 public class SpeedMechanism2d {
     private final String name;
@@ -15,75 +15,81 @@ public class SpeedMechanism2d {
     private MechanismLigament2d
             currentSpeedLigament,
             targetSpeedLigament,
-            currentArrowTopLigaments,
-            currentArrowBottomLigaments,
-            targetArrowTopLigaments,
-            targetArrowBottomLigaments;
+            currentArrowTopLigament,
+            currentArrowBottomLigament,
+            targetArrowTopLigament,
+            targetArrowBottomLigament;
 
     public SpeedMechanism2d(String name) {
         this.name = name;
         this.speedMechanism = new Mechanism2d(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
-        this.root = getRoot("speedMechanismRoot", speedMechanism);
+        this.root = createDefaultRoot("speedMechanismRoot", speedMechanism);
 
-        createCurrentLigaments();
-        createTargetLigaments();
+        createCurrentLigament();
+        createTargetLigament();
     }
 
-    public void updateCurrentSpeed(double speed) {
-        if (speed < 0) {
+    public void updateCurrentSpeed(double speedRPS) {
+        if (speedRPS < SLOWEST_SPEED_TO_CONSIDER_IDLE_RPS) {
             currentSpeedLigament.setColor(RED);
-            currentArrowTopLigaments.setColor(RED);
-            currentArrowBottomLigaments.setColor(RED);
+            currentArrowTopLigament.setColor(RED);
+            currentArrowBottomLigament.setColor(RED);
 
-            currentArrowTopLigaments.setAngle(ARROW_TOP_ANGLE_INVERSE);
-            currentArrowBottomLigaments.setAngle(ARROW_BOTTOM_ANGLE_INVERSE);
-        } else {
+            currentArrowTopLigament.setAngle(ARROW_TOP_ANGLE_INVERSE);
+            currentArrowBottomLigament.setAngle(ARROW_BOTTOM_ANGLE_INVERSE);
+        } else if (speedRPS > SLOWEST_SPEED_TO_CONSIDER_IDLE_RPS) {
             currentSpeedLigament.setColor(GREEN);
-            currentArrowTopLigaments.setColor(GREEN);
-            currentArrowBottomLigaments.setColor(GREEN);
+            currentArrowTopLigament.setColor(GREEN);
+            currentArrowBottomLigament.setColor(GREEN);
 
-            currentArrowTopLigaments.setAngle(ARROW_TOP_ANGLE);
-            currentArrowBottomLigaments.setAngle(ARROW_BOTTOM_ANGLE);
-        }
-
-        currentSpeedLigament.setLength(speed);
-        Logger.recordOutput(name, speedMechanism);
-    }
-
-    public void updateTargetSpeed(double targetSpeed) {
-        if (targetSpeed < 0) {
-            targetArrowTopLigaments.setAngle(ARROW_TOP_ANGLE_INVERSE);
-            targetArrowBottomLigaments.setAngle(ARROW_BOTTOM_ANGLE_INVERSE);
+            currentArrowTopLigament.setAngle(ARROW_TOP_ANGLE);
+            currentArrowBottomLigament.setAngle(ARROW_BOTTOM_ANGLE);
         } else {
-            targetArrowTopLigaments.setAngle(ARROW_TOP_ANGLE);
-            targetArrowBottomLigaments.setAngle(ARROW_BOTTOM_ANGLE);
+            currentSpeedLigament.setColor(GRAY);
+            currentArrowTopLigament.setColor(GRAY);
+            currentArrowBottomLigament.setColor(GRAY);
+
+            currentArrowTopLigament.setAngle(180);
+            currentArrowBottomLigament.setAngle(-180);
         }
 
-        targetSpeedLigament.setLength(targetSpeed);
+        currentSpeedLigament.setLength(speedRPS / RPS_TO_LENGTH_FACTOR);
         Logger.recordOutput(name, speedMechanism);
     }
 
-    public Mechanism2d getMechanism() {
-        return speedMechanism;
+    public void updateTargetSpeed(double targetSpeedRPS) {
+        if (targetSpeedRPS < SLOWEST_SPEED_TO_CONSIDER_IDLE_RPS) {
+            targetArrowTopLigament.setAngle(ARROW_TOP_ANGLE_INVERSE);
+            targetArrowBottomLigament.setAngle(ARROW_BOTTOM_ANGLE_INVERSE);
+        } else if (targetSpeedRPS > SLOWEST_SPEED_TO_CONSIDER_IDLE_RPS) {
+            targetArrowTopLigament.setAngle(ARROW_TOP_ANGLE);
+            targetArrowBottomLigament.setAngle(ARROW_BOTTOM_ANGLE);
+        } else {
+            targetArrowTopLigament.setAngle(180);
+            targetArrowBottomLigament.setAngle(-180);
+        }
+
+        targetSpeedLigament.setLength(targetSpeedRPS / RPS_TO_LENGTH_FACTOR);
+        Logger.recordOutput(name, speedMechanism);
     }
 
-    private void createCurrentLigaments() {
+    private void createCurrentLigament() {
         currentSpeedLigament = new MechanismLigament2d("currentSpeed", 5, 0, DEFAULT_LINE_WIDTH, GREEN);
-        currentArrowTopLigaments = new MechanismLigament2d("currentArrowTip1", 1, ARROW_TOP_ANGLE, DEFAULT_LINE_WIDTH, GREEN);
-        currentArrowBottomLigaments = new MechanismLigament2d("currentArrowTip2", 1, ARROW_BOTTOM_ANGLE, DEFAULT_LINE_WIDTH, GREEN);
+        currentArrowTopLigament = new MechanismLigament2d("currentArrowTop", 1, ARROW_TOP_ANGLE, DEFAULT_LINE_WIDTH, GREEN);
+        currentArrowBottomLigament = new MechanismLigament2d("currentArrowBottom", 1, ARROW_BOTTOM_ANGLE, DEFAULT_LINE_WIDTH, GREEN);
 
-        currentSpeedLigament.append(currentArrowTopLigaments);
-        currentSpeedLigament.append(currentArrowBottomLigaments);
+        currentSpeedLigament.append(currentArrowTopLigament);
+        currentSpeedLigament.append(currentArrowBottomLigament);
         root.append(currentSpeedLigament);
     }
 
-    private void createTargetLigaments() {
+    private void createTargetLigament() {
         targetSpeedLigament = new MechanismLigament2d("targetSpeed", 5, 0, DEFAULT_LINE_WIDTH, GRAY);
-        targetArrowTopLigaments = new MechanismLigament2d("targetArrowTip1", 1, ARROW_TOP_ANGLE, DEFAULT_LINE_WIDTH, GRAY);
-        targetArrowBottomLigaments = new MechanismLigament2d("targetArrowTip2", 1, ARROW_BOTTOM_ANGLE, DEFAULT_LINE_WIDTH, GRAY);
+        targetArrowTopLigament = new MechanismLigament2d("targetArrowTop", 1, ARROW_TOP_ANGLE, DEFAULT_LINE_WIDTH, GRAY);
+        targetArrowBottomLigament = new MechanismLigament2d("targetArrowBottom", 1, ARROW_BOTTOM_ANGLE, DEFAULT_LINE_WIDTH, GRAY);
 
-        targetSpeedLigament.append(targetArrowTopLigaments);
-        targetSpeedLigament.append(targetArrowBottomLigaments);
+        targetSpeedLigament.append(targetArrowTopLigament);
+        targetSpeedLigament.append(targetArrowBottomLigament);
         root.append(targetSpeedLigament);
     }
 }

@@ -5,17 +5,30 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.controls.*;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.StrictFollower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import frc.lib.generic.OdometryThread;
-import frc.lib.generic.hardware.motor.*;
+import frc.lib.generic.hardware.motor.Motor;
+import frc.lib.generic.hardware.motor.MotorConfiguration;
+import frc.lib.generic.hardware.motor.MotorInputs;
+import frc.lib.generic.hardware.motor.MotorProperties;
+import frc.lib.generic.hardware.motor.MotorSignal;
 import frc.lib.generic.hardware.motor.hardware.MotorUtilities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.GravityType.ARM;
@@ -32,7 +45,6 @@ public class GenericTalonFX extends Motor {
     private final TalonFXConfiguration talonConfig = new TalonFXConfiguration();
     private final TalonFXConfigurator talonConfigurator;
 
-    private final DutyCycleOut dutyCycleRequest = new DutyCycleOut(0);
     private final VoltageOut voltageRequest = new VoltageOut(0);
 
     private final PositionVoltage positionVoltageRequest = new PositionVoltage(0);
@@ -48,10 +60,10 @@ public class GenericTalonFX extends Motor {
 
     private double target;
 
-    public GenericTalonFX(String name, int deviceId) {
+    public GenericTalonFX(String name, int deviceId, String canbusName) {
         super(name);
 
-        talonFX = new TalonFX(deviceId);
+        talonFX = new TalonFX(deviceId, canbusName);
 
         talonConfigurator = talonFX.getConfigurator();
 
@@ -63,28 +75,29 @@ public class GenericTalonFX extends Motor {
         temperatureSignal = talonFX.getDeviceTemp().clone();
     }
 
+    public GenericTalonFX(String name, int deviceId) {
+        this(name, deviceId, "CAN");
+    }
+
     @Override
     public void setOutput(MotorProperties.ControlMode mode, double output) {
         target = output;
 
         switch (mode) {
-            case PERCENTAGE_OUTPUT -> talonFX.setControl(dutyCycleRequest.withOutput(output));
             case VOLTAGE -> talonFX.setControl(voltageRequest.withOutput(output));
 
             case POSITION -> {
-                if (shouldUseProfile) {
+                if (shouldUseProfile)
                     talonFX.setControl(positionMMRequest.withPosition(output).withSlot(slotToUse));
-                } else {
+                else
                     talonFX.setControl(positionVoltageRequest.withPosition(output).withSlot(slotToUse));
-                }
             }
 
             case VELOCITY -> {
-                if (shouldUseProfile) {
+                if (shouldUseProfile)
                     talonFX.setControl(velocityMMRequest.withVelocity(output).withSlot(slotToUse));
-                } else {
+                else
                     talonFX.setControl(velocityVoltageRequest.withVelocity(output).withSlot(slotToUse));
-                }
             }
 
             case CURRENT -> new UnsupportedOperationException("CTRE LOVES money and wants $150!!! dollars for this.. wtf.").printStackTrace();
@@ -192,12 +205,13 @@ public class GenericTalonFX extends Motor {
     }
 
     private void configureMotionMagic() {
-        if (currentConfiguration.profiledMaxVelocity == 0 || currentConfiguration.profiledTargetAcceleration == 0)
+        if (currentConfiguration.profileMaxVelocity == 0 && currentConfiguration.profileMaxAcceleration == 0 && currentConfiguration.profileMaxJerk == 0 ||
+                currentConfiguration.profileMaxVelocity != 0 && currentConfiguration.profileMaxAcceleration == 0 && currentConfiguration.profileMaxJerk == 0)
             return;
 
-        talonConfig.MotionMagic.MotionMagicCruiseVelocity = currentConfiguration.profiledMaxVelocity;
-        talonConfig.MotionMagic.MotionMagicAcceleration = currentConfiguration.profiledTargetAcceleration;
-        talonConfig.MotionMagic.MotionMagicJerk = currentConfiguration.profiledJerk;
+        talonConfig.MotionMagic.MotionMagicCruiseVelocity = currentConfiguration.profileMaxVelocity;
+        talonConfig.MotionMagic.MotionMagicAcceleration = currentConfiguration.profileMaxAcceleration;
+        talonConfig.MotionMagic.MotionMagicJerk = currentConfiguration.profileMaxJerk;
 
         shouldUseProfile = true;
     }
@@ -282,7 +296,6 @@ public class GenericTalonFX extends Motor {
     @Override
     public void setupSignalUpdates(MotorSignal signal, boolean useFasterThread) {
         final int updateFrequency = useFasterThread ? 200 : 50;
-
         signalsToLog[signal.getId()] = true;
 
         switch (signal) {

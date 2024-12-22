@@ -28,9 +28,8 @@ import java.util.function.DoubleSupplier;
 
 import static frc.lib.generic.hardware.motor.MotorInputs.MOTOR_INPUTS_LENGTH;
 
-//todo: possible problem when doing PID only velocity control.
 public abstract class GenericSparkBase extends Motor {
-    private SparkCommon.MotionType motionType;
+    private MotorUtilities.MotionType motionType;
 
     private final CANSparkBase spark;
     private final RelativeEncoder encoder;
@@ -56,8 +55,6 @@ public abstract class GenericSparkBase extends Motor {
     private int slotToUse = 0;
     private double conversionFactor = 1;
 
-    private double kS, kV, kA, kG;
-
     protected GenericSparkBase(String name, int deviceId) {
         super(name);
 
@@ -67,7 +64,7 @@ public abstract class GenericSparkBase extends Motor {
         encoder = getEncoder();
         sparkController = getSparkController();
 
-        SparkCommon.optimizeBusUsage(spark);
+        optimizeBusUsage(spark);
     }
 
     @Override
@@ -90,15 +87,7 @@ public abstract class GenericSparkBase extends Motor {
         setNewGoal(output);
 
         switch (mode) {
-            case PERCENTAGE_OUTPUT -> sparkController.setReference(output, CANSparkBase.ControlType.kDutyCycle);
-            case POSITION, VELOCITY -> {
-                if (getDeviceID() == 28) {
-                    this.feedforward = new Feedforward(Feedforward.Type.SIMPLE, new Feedforward.FeedForwardConstants(kS, kV, kA, kG));
-//                    this.feedforward.setFeedforwardConstants(kS, kV, kA, kG);
-                }
-                //todo wtf.. change how you do FF so this doesn't happen.
-                handleSmoothMotion(motionType, goalState, motionProfile, this.feedforward, slotToUse);
-            }
+            case POSITION, VELOCITY -> handleSmoothMotion(motionType, goalState, motionProfile, this.feedforward, slotToUse);
             case VOLTAGE -> sparkController.setReference(output, CANSparkBase.ControlType.kVoltage, slotToUse, 0);
             case CURRENT -> sparkController.setReference(output, CANSparkBase.ControlType.kCurrent, slotToUse, 0);
         }
@@ -138,22 +127,14 @@ public abstract class GenericSparkBase extends Motor {
     }
 
     protected void configureFeedforward(MotorProperties.Slot slot) {
-        final Feedforward.FeedForwardConstants constants = new Feedforward.FeedForwardConstants(slot.kS(), slot.kV(), slot.kA(), slot.kG());
+        final Feedforward.Type type = switch (slot.gravityType()) {
+            case ARM -> Feedforward.Type.ARM;
+            case ELEVATOR -> Feedforward.Type.ELEVATOR;
+            default -> Feedforward.Type.SIMPLE;
+        };
 
-        this.feedforward = new Feedforward(Feedforward.Type.SIMPLE, constants);
-
-        if (slot.gravityType() == MotorProperties.GravityType.ARM) {
-            this.feedforward = new Feedforward(Feedforward.Type.ARM, constants);
-        }
-
-        if (slot.gravityType() == MotorProperties.GravityType.ELEVATOR) {
-            this.feedforward = new Feedforward(Feedforward.Type.ELEVATOR, constants);
-        }
-
-        this.kS = slot.kS();
-        this.kV = slot.kV();
-        this.kA = slot.kA();
-        this.kG = slot.kG();
+        this.feedforward = new Feedforward(type,
+                new Feedforward.FeedForwardConstants(slot.kS(), slot.kV(), slot.kA(), slot.kG()));
     }
 
     @Override
@@ -172,7 +153,6 @@ public abstract class GenericSparkBase extends Motor {
         hasStoppedOccurred = true;
         spark.stopMotor();
     }
-
 
     @Override
     public void setMotorEncoderPosition(double position) {
@@ -195,11 +175,11 @@ public abstract class GenericSparkBase extends Motor {
         hasStoppedOccurred = false;
         setNewGoalExtras();
 
-        if (motionType == SparkCommon.MotionType.POSITION_TRAPEZOIDAL) {
+        if (motionType == MotorUtilities.MotionType.POSITION_TRAPEZOIDAL) {
             setPreviousSetpoint(new TrapezoidProfile.State(getEffectivePosition(), getEffectiveVelocity()));
-        } else if (motionType == SparkCommon.MotionType.VELOCITY_TRAPEZOIDAL) {
+        } else if (motionType == MotorUtilities.MotionType.VELOCITY_TRAPEZOIDAL) {
             setPreviousSetpoint(new TrapezoidProfile.State(getEffectiveVelocity(), getEffectiveAcceleration()));
-        } else if (motionType == SparkCommon.MotionType.POSITION_S_CURVE) {
+        } else if (motionType == MotorUtilities.MotionType.POSITION_S_CURVE) {
             setSCurveInputs(new InputParameter(
                     getEffectivePosition(),
                     getEffectiveVelocity(),
@@ -264,13 +244,13 @@ public abstract class GenericSparkBase extends Motor {
 
         inputs.setSignalsToLog(signalsToLog);
 
-        if (signalsToLog[0]) inputs.voltage = getVoltagePrivate();
-        if (signalsToLog[1]) inputs.current = spark.getOutputCurrent();
-        if (signalsToLog[2]) inputs.temperature = spark.getMotorTemperature();
-        if (signalsToLog[3] && goalState != null) inputs.target = goalState.position;
-        if (signalsToLog[4]) inputs.systemPosition = getEffectivePosition();
-        if (signalsToLog[5]) inputs.systemVelocity = getEffectiveVelocity();
-        if (signalsToLog[6]) inputs.systemAcceleration = getEffectiveAcceleration();
+        inputs.voltage = getVoltagePrivate();
+        inputs.current = spark.getOutputCurrent();
+        inputs.temperature = spark.getMotorTemperature();
+        if (goalState != null) inputs.target = goalState.position;
+        inputs.systemPosition = getEffectivePosition();
+        inputs.systemVelocity = getEffectiveVelocity();
+        inputs.systemAcceleration = getEffectiveAcceleration();
 
         MotorUtilities.handleThreadedInputs(inputs, signalQueueList);
     }
@@ -304,37 +284,40 @@ public abstract class GenericSparkBase extends Motor {
     }
 
     private void configureProfile(MotorConfiguration configuration) {
-        if (configuration.profiledMaxVelocity != 0 && configuration.profiledTargetAcceleration != 0) {
-            if (configuration.profiledJerk != 0) {
+        if (configuration.profileMaxVelocity != 0 && configuration.profileMaxAcceleration != 0) {
+            if (configuration.profileMaxJerk != 0) {
                 scurveGenerator = new SCurveGenerator(0.02,
-                        configuration.profiledMaxVelocity,
-                        configuration.profiledTargetAcceleration,
-                        configuration.profiledJerk);
+                        configuration.profileMaxVelocity,
+                        configuration.profileMaxAcceleration,
+                        configuration.profileMaxJerk);
 
-                motionType = SparkCommon.MotionType.POSITION_S_CURVE;
+                motionType = MotorUtilities.MotionType.POSITION_S_CURVE;
             } else {
                 motionProfile = new TrapezoidProfile(
                         new TrapezoidProfile.Constraints(
-                                configuration.profiledMaxVelocity,
-                                configuration.profiledTargetAcceleration
+                                configuration.profileMaxVelocity,
+                                configuration.profileMaxAcceleration
                         )
                 );
 
-                motionType = SparkCommon.MotionType.POSITION_TRAPEZOIDAL;
+                motionType = MotorUtilities.MotionType.POSITION_TRAPEZOIDAL;
             }
-        } else if (configuration.profiledTargetAcceleration != 0 && configuration.profiledJerk != 0) {
-            motionProfile = new TrapezoidProfile(
-                    new TrapezoidProfile.Constraints(
-                            configuration.profiledTargetAcceleration,
-                            configuration.profiledJerk
-                    )
-            );
+        } else if (configuration.profileMaxAcceleration != 0 && configuration.profileMaxJerk != 0) {
+            motionProfile =
+                    new TrapezoidProfile(
+                        new TrapezoidProfile.Constraints(
+                            configuration.profileMaxAcceleration,
+                            configuration.profileMaxJerk
+                        )
+                );
 
-            motionType = SparkCommon.MotionType.VELOCITY_TRAPEZOIDAL;
+            motionType = MotorUtilities.MotionType.VELOCITY_TRAPEZOIDAL;
+        } else if (feedforward.getConstants().kG != 0 && feedforward.getConstants().kV == 0 && feedforward.getConstants().kA == 0 && feedforward.getConstants().kS == 0) {
+            motionType = MotorUtilities.MotionType.POSITION_PID_WITH_KG;
         } else if (feedforward.getConstants().kS == 0 && feedforward.getConstants().kG == 0 && feedforward.getConstants().kV == 0 && feedforward.getConstants().kA == 0) {
-            motionType = SparkCommon.MotionType.POSITION_PID;
+            motionType = MotorUtilities.MotionType.POSITION_PID;
         } else {
-            motionType = SparkCommon.MotionType.VELOCITY_PID_FF;
+            motionType = MotorUtilities.MotionType.VELOCITY_PID_FF;
         }
     }
 
@@ -365,11 +348,22 @@ public abstract class GenericSparkBase extends Motor {
 
     protected abstract void configureExtras(MotorConfiguration configuration);
 
-    protected abstract void handleSmoothMotion(SparkCommon.MotionType motionType, TrapezoidProfile.State goalState, TrapezoidProfile motionProfile, final Feedforward feedforward, int slotToUse);
+    protected abstract void handleSmoothMotion(MotorUtilities.MotionType motionType, TrapezoidProfile.State goalState, TrapezoidProfile motionProfile, final Feedforward feedforward, int slotToUse);
 
     protected abstract void configurePID(MotorConfiguration configuration);
 
     protected abstract double getLastProfileCalculationTimestamp();
 
     protected abstract void setPreviousSetpoint(TrapezoidProfile.State previousSetpoint);
+
+    private void optimizeBusUsage(CANSparkBase spark) {
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, 32767);
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, 32767);
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 32767);
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, 32767);
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, 32767);
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, 32767);
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, 32767);
+        spark.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus7, 32767);
+    }
 }

@@ -23,21 +23,13 @@ public class MotorProperties {
          * <p>Units: Amperes (A)</p>
          */
         CURRENT(),
-//TODO: Realize how to do control without switch statement in here.
+//TODO: Realize how to do control wtihout siwtch statement in here.
         /**
          * Control the motor output based on the desired voltage.
          * <p>Control type: Voltage control</p>
          * <p>Units: Volts (V)</p>
          */
         VOLTAGE(),
-
-        /**
-         * Control the motor output based on the desired duty cycle.
-         * <p>Control type: Duty cycle control</p>
-         * <p>Units: Percentage (%)</p>
-         * <p>Note: 0.5 represents 50% duty cycle.</p>
-         */
-        PERCENTAGE_OUTPUT(),
 
         /**
          * Control the motor to achieve a specific position.

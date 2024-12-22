@@ -22,7 +22,6 @@ public class SimulationTalonFX extends Motor {
     private final TalonFXConfiguration talonConfig = new TalonFXConfiguration();
     private final TalonFXConfigurator talonConfigurator;
 
-    private final DutyCycleOut dutyCycleRequest = new DutyCycleOut(0);
     private final VoltageOut voltageRequest = new VoltageOut(0);
 
     private final PositionVoltage positionVoltageRequest = new PositionVoltage(0);
@@ -58,7 +57,6 @@ public class SimulationTalonFX extends Motor {
         target = output;
 
         switch (mode) {
-            case PERCENTAGE_OUTPUT -> talonFX.setControl(dutyCycleRequest.withOutput(output));
             case VOLTAGE -> talonFX.setControl(voltageRequest.withOutput(output));
 
             case POSITION -> {
@@ -119,12 +117,13 @@ public class SimulationTalonFX extends Motor {
     }
 
     private void configureMotionMagic() {
-        if (currentConfiguration.profiledMaxVelocity == 0 || currentConfiguration.profiledTargetAcceleration == 0)
+        if (currentConfiguration.profileMaxVelocity == 0 && currentConfiguration.profileMaxAcceleration == 0 && currentConfiguration.profileMaxJerk == 0 ||
+                currentConfiguration.profileMaxVelocity != 0 && currentConfiguration.profileMaxAcceleration == 0 && currentConfiguration.profileMaxJerk == 0)
             return;
 
-        talonConfig.MotionMagic.MotionMagicCruiseVelocity = currentConfiguration.profiledMaxVelocity;
-        talonConfig.MotionMagic.MotionMagicAcceleration = currentConfiguration.profiledTargetAcceleration;
-        talonConfig.MotionMagic.MotionMagicJerk = currentConfiguration.profiledJerk;
+        talonConfig.MotionMagic.MotionMagicCruiseVelocity = currentConfiguration.profileMaxVelocity;
+        talonConfig.MotionMagic.MotionMagicAcceleration = currentConfiguration.profileMaxAcceleration;
+        talonConfig.MotionMagic.MotionMagicJerk = currentConfiguration.profileMaxJerk;
 
         shouldUseProfile = true;
     }
