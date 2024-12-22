@@ -17,22 +17,22 @@ public class SingleJointedArmMechanism2d {
             currentAngleLigament,
             targetAngleLigament;
 
-    public SingleJointedArmMechanism2d(String name, double armLength, Rotation2d minimumAngle, Rotation2d maximumAngle) {
+    public SingleJointedArmMechanism2d(String name, double armLength, Rotation2d defaultAngle) {
         this.name = name;
         this.armMechanism = new Mechanism2d(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
         this.root = getRoot("armRoot", armMechanism);
 
-        createCurrent(armLength, minimumAngle);
-        createTarget(armLength, minimumAngle);
+        createCurrentLigaments(armLength, defaultAngle);
+        createTargetLigaments(armLength, defaultAngle);
     }
 
-    public void updateCurrentMechanismAngle(Rotation2d newAngle) {
-        currentAngleLigament.setAngle(newAngle);
+    public void updateCurrentAngle(Rotation2d angle) {
+        currentAngleLigament.setAngle(angle);
         Logger.recordOutput(name, armMechanism);
     }
 
-    public void updateTargetMechanismAngle(Rotation2d newTargetAngle) {
-        targetAngleLigament.setAngle(newTargetAngle);
+    public void updateTargetAngle(Rotation2d targetAngle) {
+        targetAngleLigament.setAngle(targetAngle);
         Logger.recordOutput(name, armMechanism);
     }
 
@@ -40,13 +40,13 @@ public class SingleJointedArmMechanism2d {
         return armMechanism;
     }
 
-    private void createCurrent(double armLength, Rotation2d minimumAngle) {
-        currentAngleLigament = new MechanismLigament2d("armLigament", armLength, minimumAngle.getDegrees(), DEFAULT_LINE_WIDTH, BLUE);
+    private void createCurrentLigaments(double armLength, Rotation2d defaultAngle) {
+        currentAngleLigament = new MechanismLigament2d("armLigament", armLength, defaultAngle.getDegrees(), DEFAULT_LINE_WIDTH, BLUE);
         root.append(currentAngleLigament);
     }
 
-    private void createTarget(double armLength, Rotation2d minimumAngle) {
-        targetAngleLigament = new MechanismLigament2d("targetArmLigament", armLength, minimumAngle.getDegrees(), DEFAULT_LINE_WIDTH, GRAY);
+    private void createTargetLigaments(double armLength, Rotation2d defaultAngle) {
+        targetAngleLigament = new MechanismLigament2d("targetArmLigament", armLength, defaultAngle.getDegrees(), DEFAULT_LINE_WIDTH, GRAY);
         root.append(targetAngleLigament);
     }
 }

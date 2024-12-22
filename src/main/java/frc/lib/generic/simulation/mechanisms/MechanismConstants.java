@@ -12,10 +12,10 @@ public class MechanismConstants {
             DEFAULT_LINE_WIDTH = 3;
 
     protected static double
-            DEFAULT_ARROW_TIP1 = 135,
-            DEFAULT_ARROW_TIP2 = -135,
-            DEFAULT_ARROW_TIP1_INVERSE = 45,
-            DEFAULT_ARROW_TIP2_INVERSE = -45;
+            ARROW_TOP_ANGLE = 135,
+            ARROW_BOTTOM_ANGLE = -135,
+            ARROW_TOP_ANGLE_INVERSE = 45,
+            ARROW_BOTTOM_ANGLE_INVERSE = -45;
 
     protected static Color8Bit
             RED = new Color8Bit(Color.kRed),

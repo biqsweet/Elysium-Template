@@ -122,6 +122,9 @@
           "TEST_ELBOW_MOTOR": {
             "open": true
           },
+          "TEST_FLYWHEEL_MOTOR": {
+            "open": true
+          },
           "open": true
         },
         "RL_STEER_MOTOR": {
@@ -197,8 +200,7 @@
   "NetworkTables Info": {
     "Connections": {
       "open": true
-    },
-    "visible": true
+    }
   },
   "Plot": {
     "Plot <0>": {

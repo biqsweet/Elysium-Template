@@ -47,8 +47,8 @@ public class ElevatorArmMechanism2d {
         Logger.recordOutput(name, armElevatorMechanism);
     }
 
-    public void updateTargetAngle(Rotation2d TargetAngle) {
-        targetLigament.setAngle(TargetAngle);
+    public void updateTargetAngle(Rotation2d targetAngle) {
+        targetLigament.setAngle(targetAngle);
         Logger.recordOutput(name, armElevatorMechanism);
     }
 

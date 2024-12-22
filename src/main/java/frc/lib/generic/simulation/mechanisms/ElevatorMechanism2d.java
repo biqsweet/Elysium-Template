@@ -27,18 +27,18 @@ public class ElevatorMechanism2d {
         this.root = getRoot("elevatorRoot", elevatorMechanism);
         this.targetRoot = getRoot("elevatorTargetRoot", elevatorMechanism);
 
-        createCurrent(elevatorLength);
-        createTarget(elevatorLength);
+        createCurrentLigaments(elevatorLength);
+        createTargetLigaments(elevatorLength);
         createOutline();
     }
 
-    public void updateCurrentMechanismPosition(double newPosY) {
-        root.setPosition(DEFAULT_ROOT_X, DEFAULT_ROOT_Y + newPosY);
+    public void updateCurrentMechanismPosition(double posY) {
+        root.setPosition(DEFAULT_ROOT_X, DEFAULT_ROOT_Y + posY);
         Logger.recordOutput(name, elevatorMechanism);
     }
 
-    public void updateTargetMechanismPosition(double newTargetPosY) {
-        targetRoot.setPosition(DEFAULT_ROOT_X, DEFAULT_ROOT_Y + newTargetPosY);
+    public void updateTargetMechanismPosition(double targetPosY) {
+        targetRoot.setPosition(DEFAULT_ROOT_X, DEFAULT_ROOT_Y + targetPosY);
         Logger.recordOutput(name, elevatorMechanism);
     }
 
@@ -46,7 +46,7 @@ public class ElevatorMechanism2d {
         return elevatorMechanism;
     }
 
-    private void createCurrent(double elevatorLength) {
+    private void createCurrentLigaments(double elevatorLength) {
         this.currentRightLigament = new MechanismLigament2d("elevatorRightLigament", elevatorLength, 0, DEFAULT_LINE_WIDTH, RED);
         this.currentLeftLigament = new MechanismLigament2d("elevatorLeftLigament", elevatorLength, 180, DEFAULT_LINE_WIDTH, RED);
 
@@ -54,7 +54,7 @@ public class ElevatorMechanism2d {
         root.append(currentLeftLigament);
     }
 
-    private void createTarget(double elevatorLength) {
+    private void createTargetLigaments(double elevatorLength) {
         this.targetRightLigament = new MechanismLigament2d("targetRightLigament", elevatorLength, 0, DEFAULT_LINE_WIDTH, BLUE);
         this.targetLeftLigament = new MechanismLigament2d("targetLeftLigament", elevatorLength, 180, DEFAULT_LINE_WIDTH, BLUE);
 
