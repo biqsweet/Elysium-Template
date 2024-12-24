@@ -30,7 +30,7 @@ public class Elevator extends GenericSubsystem {
 
     @Override
     public void periodic() {
-        elevatorMechanism.updateCurrentMechanismPosition(getTargetPosition() * 10);
-        elevatorMechanism.updateTargetMechanismPosition(getCurrentPosition() * 10);
+        elevatorMechanism.updateCurrentPosition(getTargetPosition() * 10);
+        elevatorMechanism.updateTargetPosition(getCurrentPosition() * 10);
     }
 }
