@@ -18,7 +18,7 @@ public class ArmConstants {
             MINIMUM_ROTATION = Rotation2d.fromDegrees(0),
             MAXIMUM_ROTATION = Rotation2d.fromDegrees(360);
 
-    protected static final SingleJointedArmMechanism2d armMechanism = new SingleJointedArmMechanism2d("SingleJointedArmMechanism2d", 10, MINIMUM_ROTATION);
+    protected static final SingleJointedArmMechanism2d armMechanism = new SingleJointedArmMechanism2d("SingleJointedArmMechanism2d", 10);
 
     static {
         configureArmMotor();

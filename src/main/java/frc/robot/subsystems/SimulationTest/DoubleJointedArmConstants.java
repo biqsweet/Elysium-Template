@@ -20,7 +20,7 @@ public class DoubleJointedArmConstants {
             SHOULDER_ENCODER = EncoderFactory.createCanCoder("SHOULDER_ENCODER", 504),
             ELBOW_ENCODER = EncoderFactory.createCanCoder("ELBOW_ENCODER", 505);
 
-    protected static final DoubleJointedArmMechanism2d doubleJointedArmMechanism2d = new DoubleJointedArmMechanism2d("DoubleJointedArmMechanism2d", 3, 2, MINIMUM_ROTATION, MINIMUM_ROTATION);
+    protected static final DoubleJointedArmMechanism2d doubleJointedArmMechanism2d = new DoubleJointedArmMechanism2d("DoubleJointedArmMechanism2d", 3, 2);
 
     static {
         configureShoulderMotor();

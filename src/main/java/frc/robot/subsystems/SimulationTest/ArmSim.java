@@ -9,7 +9,7 @@ import frc.lib.generic.hardware.motor.MotorProperties;
 import static frc.robot.subsystems.SimulationTest.ArmConstants.ARM_MOTOR;
 import static frc.robot.subsystems.SimulationTest.ArmConstants.armMechanism;
 
-public class Arm extends GenericSubsystem {
+public class ArmSim extends GenericSubsystem {
     /**
      * @param position in rotations
      */
