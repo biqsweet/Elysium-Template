@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Optimizations;
+import frc.robot.GlobalConstants;
 import frc.robot.RobotContainer;
 import frc.robot.poseestimation.photoncamera.PhotonCameraIO;
 import org.littletonrobotics.junction.Logger;
@@ -22,6 +23,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import static frc.robot.GlobalConstants.CURRENT_MODE;
+import static frc.robot.poseestimation.photoncamera.CameraFactory.VISION_SIMULATION;
 import static frc.robot.poseestimation.poseestimator.PoseEstimatorConstants.*;
 
 /**
@@ -29,7 +32,9 @@ import static frc.robot.poseestimation.poseestimator.PoseEstimatorConstants.*;
  */
 public class PoseEstimator implements AutoCloseable {
     private final Field2d field = new Field2d();
+
     private final PhotonCameraIO[] robotPoseSources;
+
     private final PoseEstimator6328 poseEstimator6328 = PoseEstimator6328.getInstance();
 
     /**
@@ -77,6 +82,10 @@ public class PoseEstimator implements AutoCloseable {
         return poseEstimator6328.getEstimatedPose();
     }
 
+    public Pose2d getOdometryPose() {
+        return poseEstimator6328.getOdometryPose();
+    }
+
     /**
      * Updates the pose estimator with the given swerve wheel positions and gyro rotations.
      * This function accepts an array of swerve wheel positions and an array of gyro rotations because the odometry can be updated at a faster rate than the main loop (which is 50 hertz).
@@ -85,30 +94,21 @@ public class PoseEstimator implements AutoCloseable {
      * @param swerveWheelPositions the swerve wheel positions accumulated since the last update
      * @param gyroRotations        the gyro rotations accumulated since the last update
      */
-    public void updatePoseEstimatorStates(SwerveDriveWheelPositions[] swerveWheelPositions, Rotation2d[] gyroRotations, double[] timestamps) {
-        if (swerveWheelPositions.length == 0) {
-            System.out.println("0!! Sweel Wheel Positions");
-            return;
-        }
-        if (gyroRotations.length == 0) {
-            System.out.println("0!! Gyro Rotations");
-            return;
-        }
-        if (timestamps.length == 0) {
-            return;
-        }
-
+    public void addOdometryObservations(SwerveDriveWheelPositions[] swerveWheelPositions, Rotation2d[] gyroRotations, double[] timestamps) {
         if (Optimizations.isColliding()) {
             DriverStation.reportWarning("The robot collided! Discarding odometry at timestamp", false);
             return;
         }
 
-        for (int i = 0; i < swerveWheelPositions.length; i++)
+        for (int i = 0; i < swerveWheelPositions.length; i++) {
+            if (swerveWheelPositions[i] == null) continue;
+
             poseEstimator6328.addOdometryObservation(new PoseEstimator6328.OdometryObservation(
                     swerveWheelPositions[i],
                     gyroRotations[i],
                     timestamps[i])
             );
+        }
     }
 
     private void updateFromVision() {
@@ -125,6 +125,16 @@ public class PoseEstimator implements AutoCloseable {
 
             if (visionObservation != null)
                 viableVisionObservations.add(visionObservation);
+
+            if (CURRENT_MODE == GlobalConstants.Mode.SIMULATION) {
+                if (visionObservation != null && visionObservation.visionPose() != null)
+                    VISION_SIMULATION.getDebugField()
+                        .getObject("VisionEstimation")
+                        .setPose(visionObservation.visionPose());
+                else {
+                    VISION_SIMULATION.getDebugField().getObject("VisionEstimation").setPoses();
+                }
+            }
         }
 
         return viableVisionObservations;

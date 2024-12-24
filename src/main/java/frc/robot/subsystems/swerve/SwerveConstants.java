@@ -7,20 +7,17 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import frc.lib.generic.hardware.pigeon.Pigeon;
+import frc.lib.generic.hardware.pigeon.PigeonConfiguration;
 import frc.lib.generic.hardware.pigeon.PigeonFactory;
 import frc.lib.generic.hardware.pigeon.PigeonSignal;
-import frc.lib.math.AdvancedSwerveKinematics;
-
-import static edu.wpi.first.units.Units.Inch;
-import static edu.wpi.first.units.Units.Meters;
 
 public class SwerveConstants {
     public static final double DRIVE_GEAR_RATIO = (6.75);
     public static final double STEER_GEAR_RATIO = (150.0 / 7.0);
 
-    public static final double WHEEL_DIAMETER = Meters.convertFrom(4, Inch);
+    public static final double WHEEL_DIAMETER = 0.0465117190934167*2;
+//            Meters.convertFrom(4, Inch);
 
     static final double WHEEL_BASE = 0.565;
     static final double TRACK_WIDTH = 0.615;
@@ -30,31 +27,31 @@ public class SwerveConstants {
 
     public static final double DRIVE_BASE_RADIUS = new Translation2d(TRACK_WIDTH / 2, WHEEL_BASE / 2).getNorm();
     
-    private static final Translation2d[] moduleLocations = {
+    public static final Translation2d[] MODULE_LOCATIONS = {
             new Translation2d(WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0),
             new Translation2d(WHEEL_BASE / 2.0, -TRACK_WIDTH / 2.0),
             new Translation2d(-WHEEL_BASE / 2.0, TRACK_WIDTH / 2.0),
             new Translation2d(-WHEEL_BASE / 2.0, -TRACK_WIDTH / 2.0)
     };
 
-    public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(moduleLocations);
-    public static final AdvancedSwerveKinematics ADVANCED_KINEMATICS = new AdvancedSwerveKinematics(moduleLocations);
+    public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(MODULE_LOCATIONS);
 
     public static final double
-            DRIVE_NEUTRAL_DEADBAND = 0.2,
-            ROTATION_NEUTRAL_DEADBAND = 0.2;
+            DRIVE_NEUTRAL_DEADBAND = 0.15,
+            ROTATION_NEUTRAL_DEADBAND = 0.15;
 
     /**
      * Units of RADIANS for everything.
      */
     static final ProfiledPIDController ROTATION_CONTROLLER = new ProfiledPIDController(
-            1.9, 0, 0.0011,
-            new TrapezoidProfile.Constraints(Math.PI / 2, Math.PI / 2)
+//            1.9, 0, 0.0011,
+            3.9, 0, 0.05,
+            new TrapezoidProfile.Constraints(360, 360)
     );
 
     public static final HolonomicPathFollowerConfig HOLONOMIC_PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
+            new PIDConstants(10, 0, 0),
             new PIDConstants(1, 0, 0),
-            new PIDConstants(2, 0, 0),
             MAX_SPEED_MPS,
             DRIVE_BASE_RADIUS,
             new ReplanningConfig(true, false)
@@ -68,12 +65,12 @@ public class SwerveConstants {
     }
 
     private static void configureGyro() {
-        GYRO.resetConfigurations();
+        GYRO.configurePigeon(new PigeonConfiguration());
         GYRO.setupSignalUpdates(PigeonSignal.YAW, true);
     }
 
     private static void configureRotationController() {
-        ROTATION_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
-        ROTATION_CONTROLLER.setTolerance(Units.degreesToRadians(0.8));
+        ROTATION_CONTROLLER.enableContinuousInput(-180, 180);
+        ROTATION_CONTROLLER.setTolerance(1.5);
     }
 }

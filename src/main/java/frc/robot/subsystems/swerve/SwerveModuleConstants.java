@@ -24,9 +24,9 @@ public class SwerveModuleConstants {
     static final boolean ANGLE_MOTOR_INVERT = true;
     static final boolean DRIVE_MOTOR_INVERT = false;
 
-    static final int ANGLE_CURRENT_LIMIT = 30;
-    static final int DRIVE_SUPPLY_CURRENT_LIMIT = 35;
-    static final int DRIVE_STATOR_CURRENT_LIMIT = 50;
+    static final int ANGLE_CURRENT_LIMIT = 40;
+    static final int DRIVE_SUPPLY_CURRENT_LIMIT = 60;
+    static final int DRIVE_STATOR_CURRENT_LIMIT = 60;
 
     static final MotorProperties.Slot DRIVE_SLOT = new MotorProperties.Slot(
             0.053067, 0.0, 0.0,
@@ -54,21 +54,20 @@ public class SwerveModuleConstants {
 
     static final double[] STEER_ENCODER_OFFSET = {0.677246, 0.282715, 0.533447, 0.313721};
 
-    static final Encoder[] STEER_ENCODER = {FL_STEER_ENCODER, FR_STEER_ENCODER, RL_STEER_ENCODER, RR_STEER_ENCODER};
-    static final Motor[] STEER_MOTOR = {FL_STEER_MOTOR, FR_STEER_MOTOR, RL_STEER_MOTOR, RR_STEER_MOTOR};
-    static final Motor[] DRIVE_MOTOR = {FL_DRIVE_MOTOR, FR_DRIVE_MOTOR, RL_DRIVE_MOTOR, RR_DRIVE_MOTOR};
-
+    static final Encoder[] STEER_ENCODERS = {FL_STEER_ENCODER, FR_STEER_ENCODER, RL_STEER_ENCODER, RR_STEER_ENCODER};
+    static final Motor[] STEER_MOTORS = {FL_STEER_MOTOR, FR_STEER_MOTOR, RL_STEER_MOTOR, RR_STEER_MOTOR};
+    static final Motor[] DRIVE_MOTORS = {FL_DRIVE_MOTOR, FR_DRIVE_MOTOR, RL_DRIVE_MOTOR, RR_DRIVE_MOTOR};
 
     static {
         configureSteerConfiguration();
         configureDriveConfiguration();
 
         for (int i = 0; i < 4; i++) {
-            configureSteerEncoder(STEER_ENCODER[i], Rotation2d.fromRotations(STEER_ENCODER_OFFSET[i]));
-            configureDriveMotor(DRIVE_MOTOR[i]);
-            configureSteerMotor(STEER_MOTOR[i], STEER_ENCODER[i]);
+            configureSteerEncoder(STEER_ENCODERS[i], Rotation2d.fromRotations(STEER_ENCODER_OFFSET[i]));
+            configureDriveMotor(DRIVE_MOTORS[i]);
+            configureSteerMotor(STEER_MOTORS[i], STEER_ENCODERS[i]);
 
-            setSimulatedEncoderSources(STEER_ENCODER[i], STEER_MOTOR[i]);
+            setSimulatedEncoderSources(STEER_ENCODERS[i], STEER_MOTORS[i]);
         }
     }
 
@@ -78,7 +77,7 @@ public class SwerveModuleConstants {
             new SwerveModule(RL_DRIVE_MOTOR, RL_STEER_MOTOR, RL_STEER_ENCODER),
             new SwerveModule(RR_DRIVE_MOTOR, RR_STEER_MOTOR, RR_STEER_ENCODER)
     };
- 
+
     private static void configureSteerEncoder(Encoder steerEncoder, Rotation2d angleOffset) {
         final EncoderConfiguration encoderConfiguration = new EncoderConfiguration();
 
@@ -99,8 +98,9 @@ public class SwerveModuleConstants {
     private static void configureDriveMotor(Motor driveMotor) {
         driveMotor.setupSignalUpdates(POSITION, true);
 
-        driveMotor.setupSignalUpdates(VELOCITY);
+        driveMotor.setupSignalUpdates(CLOSED_LOOP_TARGET);
         driveMotor.setupSignalUpdates(VOLTAGE);
+        driveMotor.setupSignalUpdates(VELOCITY);
         driveMotor.setupSignalUpdates(TEMPERATURE);
 
         driveMotor.configure(driveMotorConfiguration);
@@ -109,6 +109,8 @@ public class SwerveModuleConstants {
     private static void configureSteerMotor(Motor steerMotor, Encoder encoder) {
         steerMotor.setupSignalUpdates(POSITION);
         steerMotor.setupSignalUpdates(VELOCITY);
+        steerMotor.setupSignalUpdates(VOLTAGE);
+        steerMotor.setupSignalUpdates(CLOSED_LOOP_TARGET);
         steerMotor.configure(steerMotorConfiguration);
 
         steerMotor.setExternalPositionSupplier(encoder::getEncoderPosition);
@@ -129,7 +131,7 @@ public class SwerveModuleConstants {
         driveMotorConfiguration.dutyCycleClosedLoopRampPeriod = CLOSED_LOOP_RAMP;
 
         driveMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.SIMPLE_MOTOR, DCMotor.getFalcon500(1), DRIVE_GEAR_RATIO,0.003);
-        driveMotorConfiguration.simulationSlot = new MotorProperties.Slot(40, 0, 0, 0, 0, 0);
+        driveMotorConfiguration.simulationSlot = new MotorProperties.Slot(0.7, 0, 0, 0, 0, 0);
     }
 
     private static void configureSteerConfiguration() {
