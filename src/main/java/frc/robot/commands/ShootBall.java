@@ -60,10 +60,6 @@ public class ShootBall extends Command {
         double x = F * Math.cos(phi) * Math.cos(theta);
         double y = F * Math.cos(phi) * Math.sin(theta);
 
-        System.out.println("X: " + x + " Y: " + y + " Z:" + z);
-        System.out.println("phi: "+ ARM.getTargetArmPosition());
-        System.out.println("theta: "+ TURRET.getTargetTurretPosition());
-
         Translation2d distanceToHub = HUB_POSITION.toTranslation2d().minus(robotPosition.getTranslation());
         final double acceleration = -20;
 
