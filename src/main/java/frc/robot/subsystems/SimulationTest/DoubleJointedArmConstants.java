@@ -8,8 +8,8 @@ import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.DoubleJointedArmMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
-import static frc.robot.subsystems.SimulationTest.ArmConstants.MAXIMUM_ROTATION;
-import static frc.robot.subsystems.SimulationTest.ArmConstants.MINIMUM_ROTATION;
+import static frc.robot.subsystems.SimulationTest.ArmSimConstants.MAXIMUM_ROTATION;
+import static frc.robot.subsystems.SimulationTest.ArmSimConstants.MINIMUM_ROTATION;
 
 public class DoubleJointedArmConstants {
     protected static final Motor

@@ -18,6 +18,7 @@ import frc.robot.poseestimation.objectdetection.DetectionCameraIO;
 import frc.robot.poseestimation.poseestimator.PoseEstimator;
 import frc.robot.subsystems.SimulationTest.*;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeArm;
 import frc.robot.subsystems.swerve.Swerve;
@@ -51,7 +52,7 @@ public class RobotContainer {
     public static final VerticalConveyor CONVEYOR = new VerticalConveyor();
 
     public static final ArmSim armSim = new ArmSim();
-    public static final Flywheel flywheelSim = new Flywheel();
+    public static final FlywheelSim flywheelSim = new FlywheelSim();
     public static final DoubleJointedArm doubleSim = new DoubleJointedArm();
     public static final Elevator elevatorSim = new Elevator();
     public static final ElevatorArm elevatorArmSim = new ElevatorArm();

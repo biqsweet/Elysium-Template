@@ -10,7 +10,7 @@ import frc.lib.generic.simulation.mechanisms.SingleJointedArmMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
 
-public class ArmConstants {
+public class ArmSimConstants {
     protected static final Motor ARM_MOTOR = MotorFactory.createSpark("ARM_MOTOR", 500, MAX);
     protected static final Encoder ARM_ENCODER = EncoderFactory.createCanCoder("ARM_ENCODER", 501);
 

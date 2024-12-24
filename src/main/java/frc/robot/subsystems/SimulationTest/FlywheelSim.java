@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
-import static frc.robot.subsystems.SimulationTest.FlywheelConstants.FLYWHEEL_MOTOR;
-import static frc.robot.subsystems.SimulationTest.FlywheelConstants.flywheelMechanism;
+import static frc.robot.subsystems.SimulationTest.FlywheelSimConstants.FLYWHEEL_MOTOR;
+import static frc.robot.subsystems.SimulationTest.FlywheelSimConstants.flywheelMechanism;
 
-public class Flywheel extends GenericSubsystem {
+public class FlywheelSim extends GenericSubsystem {
     public Command setFlywheelVoltage(double voltage) {
         return Commands.run(() -> FLYWHEEL_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage), this);
     }

@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
-import static frc.robot.subsystems.SimulationTest.ArmConstants.ARM_MOTOR;
-import static frc.robot.subsystems.SimulationTest.ArmConstants.armMechanism;
+import static frc.robot.subsystems.SimulationTest.ArmSimConstants.ARM_MOTOR;
+import static frc.robot.subsystems.SimulationTest.ArmSimConstants.armMechanism;
 
 public class ArmSim extends GenericSubsystem {
     /**
