@@ -8,12 +8,13 @@ import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.ElevatorMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
+import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createElevatorMechanism;
 
 public class ElevatorConstants {
     protected static final Motor ELEVATOR_MOTOR = MotorFactory.createSpark("ELEVATOR_MOTOR", 506, MAX);
     protected static final Encoder ELEVATOR_ENCODER = EncoderFactory.createCanCoder("ELEVATOR_ENCODER", 507);
 
-    protected static final ElevatorMechanism2d elevatorMechanism = new ElevatorMechanism2d("ElevatorMechanism2d", 4);
+    protected static final ElevatorMechanism2d elevatorMechanism = createElevatorMechanism("ElevatorMechanism2d", 4);
 
     static {
         configureElevatorMotor();

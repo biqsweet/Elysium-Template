@@ -9,6 +9,7 @@ import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.ArmElevatorMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
+import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createArmElevatorMechanism;
 
 public class ElevatorArmConstants {
     protected static final Motor ARM_ELEVATOR_MOTOR = MotorFactory.createSpark("ARM_ELEVATOR_MOTOR", 500, MAX);
@@ -17,7 +18,7 @@ public class ElevatorArmConstants {
     protected static final Motor ELEVATOR_ARM_MOTOR = MotorFactory.createSpark("ELEVATOR_ARM_MOTOR", 506, MAX);
     protected static final Encoder ELEVATOR_ENCODER = EncoderFactory.createCanCoder("ELEVATOR_ARM_ENCODER", 507);
 
-    protected static final ArmElevatorMechanism2d elevatorArmMechanism = new ArmElevatorMechanism2d("ElevatorArmMechanism2d", 4);
+    protected static final ArmElevatorMechanism2d elevatorArmMechanism = createArmElevatorMechanism("ElevatorArmMechanism2d", 4);
 
     protected static final Rotation2d
             MINIMUM_ROTATION = Rotation2d.fromDegrees(0),

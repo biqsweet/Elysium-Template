@@ -8,6 +8,7 @@ import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.DoubleJointedArmMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
+import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createDoubleJointedMechanism;
 import static frc.robot.subsystems.SimulationTest.ArmSimConstants.MAXIMUM_ROTATION;
 import static frc.robot.subsystems.SimulationTest.ArmSimConstants.MINIMUM_ROTATION;
 
@@ -20,7 +21,7 @@ public class DoubleJointedArmConstants {
             SHOULDER_ENCODER = EncoderFactory.createCanCoder("SHOULDER_ENCODER", 504),
             ELBOW_ENCODER = EncoderFactory.createCanCoder("ELBOW_ENCODER", 505);
 
-    protected static final DoubleJointedArmMechanism2d doubleJointedArmMechanism2d = new DoubleJointedArmMechanism2d("DoubleJointedArmMechanism2d", 3, 2);
+    protected static final DoubleJointedArmMechanism2d doubleJointedArmMechanism2d = createDoubleJointedMechanism("DoubleJointedArmMechanism2d", 3, 2);
 
     static {
         configureShoulderMotor();
