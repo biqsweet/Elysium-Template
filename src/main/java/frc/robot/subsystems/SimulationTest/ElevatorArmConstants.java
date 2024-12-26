@@ -9,7 +9,7 @@ import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.ArmElevatorMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createArmElevatorMechanism;
+import static frc.lib.generic.simulation.mechanisms.MechanismFactory.createArmElevatorMechanism;
 
 public class ElevatorArmConstants {
     protected static final Motor ARM_ELEVATOR_MOTOR = MotorFactory.createSpark("ARM_ELEVATOR_MOTOR", 500, MAX);

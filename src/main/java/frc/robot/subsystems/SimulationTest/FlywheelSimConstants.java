@@ -6,7 +6,7 @@ import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.SpeedMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createSpeedMechanism;
+import static frc.lib.generic.simulation.mechanisms.MechanismFactory.createSpeedMechanism;
 
 public class FlywheelSimConstants {
     protected static final Motor FLYWHEEL_MOTOR = MotorFactory.createSpark("TEST_FLYWHEEL_MOTOR", 508, MAX);

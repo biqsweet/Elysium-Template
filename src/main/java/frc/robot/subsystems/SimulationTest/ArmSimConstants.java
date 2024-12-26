@@ -9,7 +9,7 @@ import frc.lib.generic.simulation.SimulationProperties;
 import frc.lib.generic.simulation.mechanisms.SingleJointedArmMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createSingleJointedMechanism;
+import static frc.lib.generic.simulation.mechanisms.MechanismFactory.createSingleJointedMechanism;
 
 public class ArmSimConstants {
     protected static final Motor ARM_MOTOR = MotorFactory.createSpark("ARM_MOTOR", 500, MAX);
