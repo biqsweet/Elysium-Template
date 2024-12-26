@@ -13,6 +13,7 @@ public class MechanismFactory {
         if (CURRENT_MODE == GlobalConstants.Mode.SIMULATION) {
             return new SingleJointedArmMechanism2d(name, armLength);
         }
+        
         return null;
     }
 
@@ -24,6 +25,7 @@ public class MechanismFactory {
         if (CURRENT_MODE == GlobalConstants.Mode.SIMULATION) {
             return new DoubleJointedArmMechanism2d(name, shoulderLength, elbowLength);
         }
+        
         return null;
     }
 
@@ -46,6 +48,7 @@ public class MechanismFactory {
         if (CURRENT_MODE == GlobalConstants.Mode.SIMULATION) {
             return new ElevatorMechanism2d(name, elevatorLength);
         }
+        
         return null;
     }
 
@@ -57,6 +60,7 @@ public class MechanismFactory {
         if (CURRENT_MODE == GlobalConstants.Mode.SIMULATION) {
             return new ArmElevatorMechanism2d(name, armLength);
         }
+        
         return null;
     }
 }
