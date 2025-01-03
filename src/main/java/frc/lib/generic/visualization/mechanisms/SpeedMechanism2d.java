@@ -1,12 +1,12 @@
-package frc.lib.generic.simulation.mechanisms;
+package frc.lib.generic.visualization.mechanisms;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import org.littletonrobotics.junction.Logger;
 
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createDefaultRoot;
+import static frc.lib.generic.visualization.mechanisms.MechanismConstants.*;
+import static frc.lib.generic.visualization.mechanisms.MechanismUtilities.createDefaultRoot;
 
 public class SpeedMechanism2d {
     private final String name;
@@ -21,7 +21,7 @@ public class SpeedMechanism2d {
             targetArrowBottomLigament;
 
     public SpeedMechanism2d(String name) {
-        this.name = name;
+        this.name = "Mechanism/" + name;
         this.speedMechanism = new Mechanism2d(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
         this.root = createDefaultRoot("speedMechanismRoot", speedMechanism);
 

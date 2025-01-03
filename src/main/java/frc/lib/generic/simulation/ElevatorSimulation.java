@@ -4,15 +4,17 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import frc.lib.generic.simulation.extensions.ExtendedElevatorSim;
 import frc.lib.math.Conversions;
 
-import static frc.lib.generic.simulation.SimulationConstants.ROBORIO_LOOP_TIME;
+import static frc.robot.GlobalConstants.ROBOT_PERIODIC_LOOP_TIME;
 
-public class ElevatorSimulation extends GenericSimulation {
+public class ElevatorSimulation extends GenericPhysicsSimulation {
     private final ExtendedElevatorSim elevatorSimulation;
 
     private final double minimumHeightMetres;
     private final double drumDiameterMetres;
 
     public ElevatorSimulation(DCMotor gearbox, double gearRatio, double carriageMassKilograms, double drumRadiusMeters, double minimumHeightMetres, double maximumHeightMetres, boolean simulateGravity) {
+        super(gearRatio);
+
         elevatorSimulation = new ExtendedElevatorSim(
                 gearbox,
                 gearRatio,
@@ -28,35 +30,35 @@ public class ElevatorSimulation extends GenericSimulation {
         this.drumDiameterMetres = drumRadiusMeters * 2;
     }
 
-
-    @Override
-    public double getPositionRotations() {
-        return Conversions.metresToRotations(
-                elevatorSimulation.getPositionMeters() - minimumHeightMetres, drumDiameterMetres);
-    }
-
-    @Override
-    public double getVelocityRotationsPerSecond() {
-        return Conversions.mpsToRps(elevatorSimulation.getVelocityMetersPerSecond(), drumDiameterMetres);
-    }
-
-    @Override
-    public double getAccelerationRotationsPerSecondSquared() {
-        return Conversions.mpsToRps(elevatorSimulation.getAccelerationMetersPerSecondSquared(), drumDiameterMetres);
-    }
-
     @Override
     public double getCurrent() {
         return elevatorSimulation.getCurrentDrawAmps();
     }
 
     @Override
-    void setVoltage(double voltage) {
+    public double getSystemPositionRotations() {
+        return Conversions.metresToRotations(
+                elevatorSimulation.getPositionMeters() - minimumHeightMetres, drumDiameterMetres);
+
+    }
+
+    @Override
+    public double getSystemVelocityRotationsPerSecond() {
+        return Conversions.mpsToRps(elevatorSimulation.getVelocityMetersPerSecond(), drumDiameterMetres);
+    }
+
+    @Override
+    public double getSystemAccelerationRotationsPerSecondSquared() {
+        return Conversions.mpsToRps(elevatorSimulation.getAccelerationMetersPerSecondSquared(), drumDiameterMetres);
+    }
+
+    @Override
+    public void setVoltage(double voltage) {
         elevatorSimulation.setInputVoltage(voltage);
     }
 
     @Override
-     void update() {
-        elevatorSimulation.update(ROBORIO_LOOP_TIME);
+    public void updateMotor() {
+        elevatorSimulation.update((ROBOT_PERIODIC_LOOP_TIME));
     }
 }

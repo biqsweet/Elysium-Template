@@ -5,7 +5,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 
 public class SimulationProperties {
     public enum SimulationType {
-        SIMPLE_MOTOR, FLYWHEEL, ELEVATOR, ARM
+        SIMPLE_MOTOR, ELEVATOR, ARM
     }
 
     public static class Slot {
@@ -72,26 +72,26 @@ public class SimulationProperties {
             this.ka = ka;
         }
 
-        public GenericSimulation getSimulationFromType() {
-            if (type == null) { return null; }
+        public GenericPhysicsSimulation getSimulationType() {
+            if (type == null) {
+                return null;
+            }
 
             return switch (type) {
-                case SIMPLE_MOTOR -> new SimpleMotorSimulation(gearbox, gearRatio, momentOfInertia);
-
-                case FLYWHEEL -> {
+                case SIMPLE_MOTOR -> {
                     if (kv == 0 && ka == 0) {
-                        yield new FlywheelSimulation(gearbox, gearRatio, momentOfInertia);
+                        yield new SimpleMotorSimulation(gearbox, gearRatio, momentOfInertia);
                     } else {
-                        yield new FlywheelSimulation(gearbox, gearRatio, kv, ka);
+                        yield new SimpleMotorSimulation(gearbox, gearRatio, kv, ka);
                     }
                 }
 
                 case ELEVATOR ->
                         new ElevatorSimulation(gearbox, gearRatio, carriageMassKilograms, drumRadiusMeters, minimumHeightMeters, maximumHeightMeters, simulateGravity);
                 case ARM ->
-                        new SingleJointedArmSimulation(gearbox,gearRatio,
+                        new SingleJointedArmSimulation(gearbox, gearRatio,
                                 armLengthMeters, momentOfInertia,
-                                minimumAngle, maximumAngle, simulateGravity, true);
+                                minimumAngle, maximumAngle, simulateGravity);
             };
         }
     }

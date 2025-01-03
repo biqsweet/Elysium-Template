@@ -1,17 +1,25 @@
 package frc.lib.generic.simulation;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import frc.lib.generic.simulation.extensions.ExtendedDCMotorSim;
 
-import static frc.lib.generic.simulation.SimulationConstants.ROBORIO_LOOP_TIME;
+import static frc.robot.GlobalConstants.ROBOT_PERIODIC_LOOP_TIME;
 
-public class SimpleMotorSimulation extends GenericSimulation {
+public class SimpleMotorSimulation extends GenericPhysicsSimulation {
     private final ExtendedDCMotorSim motorSimulation;
 
     public SimpleMotorSimulation(DCMotor gearbox, double gearRatio, double momentOfInertia) {
-        motorSimulation = new ExtendedDCMotorSim(gearbox, gearRatio, momentOfInertia);
+        super(gearRatio);
+        motorSimulation = new ExtendedDCMotorSim(gearbox,gearRatio, momentOfInertia);
     }
+
+    public SimpleMotorSimulation(DCMotor gearbox, double gearRatio, double kv, double ka) {
+        super(gearRatio);
+        motorSimulation = new ExtendedDCMotorSim(LinearSystemId.createDCMotorSystem(kv, ka), gearbox, gearRatio);
+    }
+
 
     @Override
     public double getCurrent() {
@@ -19,27 +27,27 @@ public class SimpleMotorSimulation extends GenericSimulation {
     }
 
     @Override
-    public double getPositionRotations() {
+    public double getSystemPositionRotations() {
         return Units.radiansToRotations(motorSimulation.getAngularPositionRad());
     }
 
     @Override
-    public double getVelocityRotationsPerSecond() {
+    public double getSystemVelocityRotationsPerSecond() {
         return Units.radiansToRotations(motorSimulation.getAngularVelocityRadPerSec());
     }
 
     @Override
-    public double getAccelerationRotationsPerSecondSquared() {
+    public double getSystemAccelerationRotationsPerSecondSquared() {
         return Units.radiansToRotations(motorSimulation.getAccelerationRadiansPerSecondSquared());
     }
 
     @Override
-    void setVoltage(double voltage) {
+    public void setVoltage(double voltage) {
         motorSimulation.setInputVoltage(voltage);
     }
 
     @Override
-    void update()  {
-        motorSimulation.update(ROBORIO_LOOP_TIME);
+    public void updateMotor() {
+        motorSimulation.update(ROBOT_PERIODIC_LOOP_TIME);
     }
 }

@@ -1,4 +1,4 @@
-package frc.lib.generic.simulation.mechanisms;
+package frc.lib.generic.visualization.mechanisms;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import org.littletonrobotics.junction.Logger;
 
-import static frc.lib.generic.simulation.mechanisms.MechanismConstants.*;
-import static frc.lib.generic.simulation.mechanisms.MechanismUtilities.createDefaultRoot;
+import static frc.lib.generic.visualization.mechanisms.MechanismConstants.*;
+import static frc.lib.generic.visualization.mechanisms.MechanismUtilities.createDefaultRoot;
 
 
 public class DoubleJointedArmMechanism2d {
@@ -21,7 +21,7 @@ public class DoubleJointedArmMechanism2d {
             targetElbowLigament;
 
     public DoubleJointedArmMechanism2d(String name, double shoulderLength, double elbowLength) {
-        this.name = name;
+        this.name = "Mechanism/" + name;
         this.doubleJointedArmMechanism = new Mechanism2d(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
         this.root = createDefaultRoot("DoubleJointedArmRoot", doubleJointedArmMechanism);
 
