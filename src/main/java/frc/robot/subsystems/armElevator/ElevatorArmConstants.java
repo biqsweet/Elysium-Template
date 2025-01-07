@@ -1,4 +1,4 @@
-package frc.robot.subsystems.SimulationTest;
+package frc.robot.subsystems.armElevator;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -6,10 +6,10 @@ import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderFactory;
 import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
-import frc.lib.generic.simulation.mechanisms.ArmElevatorMechanism2d;
+import frc.lib.generic.visualization.mechanisms.ArmElevatorMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
-import static frc.lib.generic.simulation.mechanisms.MechanismFactory.createArmElevatorMechanism;
+import static frc.lib.generic.visualization.mechanisms.MechanismFactory.createArmElevatorMechanism;
 
 public class ElevatorArmConstants {
     protected static final Motor ARM_ELEVATOR_MOTOR = MotorFactory.createSpark("ARM_ELEVATOR_MOTOR", 500, MAX);

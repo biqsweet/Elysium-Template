@@ -1,4 +1,4 @@
-package frc.robot.subsystems.SimulationTest;
+package frc.robot.subsystems.armElevator;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
-import static frc.robot.subsystems.SimulationTest.ElevatorArmConstants.*;
+import static frc.robot.subsystems.armElevator.ElevatorArmConstants.*;
 
 public class ElevatorArm extends GenericSubsystem {
     /**

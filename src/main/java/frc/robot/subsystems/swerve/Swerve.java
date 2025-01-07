@@ -4,16 +4,15 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveWheelPositions;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.OdometryThread;
 import frc.lib.generic.PID;
+import frc.lib.generic.hardware.motor.Motor;
 import frc.lib.math.Optimizations;
 import frc.lib.util.mirrorable.Mirrorable;
 import frc.robot.RobotContainer;
@@ -22,11 +21,8 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import static frc.lib.math.Conversions.proportionalPowerToMps;
 import static frc.lib.math.MathUtils.getAngleFromPoseToPose;
 import static frc.robot.RobotContainer.POSE_ESTIMATOR;
-import static frc.robot.subsystems.swerve.SwerveConstants.GYRO;
-import static frc.robot.subsystems.swerve.SwerveConstants.HOLONOMIC_PATH_FOLLOWER_CONFIG;
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_SPEED_MPS;
-import static frc.robot.subsystems.swerve.SwerveConstants.ROTATION_CONTROLLER;
-import static frc.robot.subsystems.swerve.SwerveConstants.SWERVE_KINEMATICS;
+import static frc.robot.subsystems.swerve.SwerveConstants.*;
+import static frc.robot.subsystems.swerve.SwerveModuleConstants.DRIVE_MOTORS;
 import static frc.robot.subsystems.swerve.SwerveModuleConstants.MODULES;
 
 public class Swerve extends GenericSubsystem {
@@ -57,6 +53,10 @@ public class Swerve extends GenericSubsystem {
         return Rotation2d.fromDegrees(inputtedHeading);
     }
 
+    public void setGyroHeading(Rotation2d heading) {
+        GYRO.setGyroYaw(heading.getDegrees());
+    }
+
     public double[] getDriveWheelPositionsRadians() {
         double[] positions = new double[4];
 
@@ -67,12 +67,16 @@ public class Swerve extends GenericSubsystem {
         return positions;
     }
 
-    public void setGyroHeading(Rotation2d heading) {
-        GYRO.setGyroYaw(heading.getDegrees());
-    }
-
     public ChassisSpeeds getSelfRelativeVelocity() {
         return SWERVE_KINEMATICS.toChassisSpeeds(getModuleStates());
+    }
+
+    public Command setMotorEncoderPositionTest(double position) {
+        return Commands.runOnce(() -> {
+            for (Motor driveMotor : DRIVE_MOTORS) {
+                driveMotor.setMotorEncoderPosition(position);
+            }
+        });
     }
 
     @Override
@@ -91,10 +95,10 @@ public class Swerve extends GenericSubsystem {
         }
 
         POSE_ESTIMATOR.addOdometryObservations(
-                        swerveWheelPositions,
-                        gyroRotations,
-                        OdometryThread.getInstance().getLatestTimestamps()
-                );
+                swerveWheelPositions,
+                gyroRotations,
+                OdometryThread.getInstance().getLatestTimestamps()
+        );
     }
 
     protected void driveOrientationBased(double xPower, double yPower, double thetaPower, boolean robotCentric) {

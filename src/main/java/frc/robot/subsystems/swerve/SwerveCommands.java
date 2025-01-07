@@ -122,7 +122,6 @@ GlobalConstants.CURRENT_MODE == GlobalConstants.Mode.SIMULATION ? 0 : -8.5));
         );
     }
 
-
     public static Command goToPoseWithPID(Pose2d targetPose) {
         final Pose2d fixedTargetPose = new Pose2d(targetPose.getTranslation(), Rotation2d.fromDegrees(MathUtil.inputModulus(targetPose.getRotation().getDegrees(), -180, 180)));
 

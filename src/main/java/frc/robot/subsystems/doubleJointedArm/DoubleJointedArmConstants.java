@@ -1,16 +1,15 @@
-package frc.robot.subsystems.SimulationTest;
+package frc.robot.subsystems.doubleJointedArm;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import frc.lib.generic.hardware.encoder.Encoder;
 import frc.lib.generic.hardware.encoder.EncoderFactory;
 import frc.lib.generic.hardware.motor.*;
 import frc.lib.generic.simulation.SimulationProperties;
-import frc.lib.generic.simulation.mechanisms.DoubleJointedArmMechanism2d;
+import frc.lib.generic.visualization.mechanisms.DoubleJointedArmMechanism2d;
 
 import static frc.lib.generic.hardware.motor.MotorProperties.SparkType.MAX;
-import static frc.lib.generic.simulation.mechanisms.MechanismFactory.createDoubleJointedMechanism;
-import static frc.robot.subsystems.SimulationTest.ArmSimConstants.MAXIMUM_ROTATION;
-import static frc.robot.subsystems.SimulationTest.ArmSimConstants.MINIMUM_ROTATION;
+import static frc.lib.generic.visualization.mechanisms.MechanismFactory.createDoubleJointedArmMechanism;
 
 public class DoubleJointedArmConstants {
     protected static final Motor
@@ -21,7 +20,7 @@ public class DoubleJointedArmConstants {
             SHOULDER_ENCODER = EncoderFactory.createCanCoder("SHOULDER_ENCODER", 504),
             ELBOW_ENCODER = EncoderFactory.createCanCoder("ELBOW_ENCODER", 505);
 
-    protected static final DoubleJointedArmMechanism2d doubleJointedArmMechanism2d = createDoubleJointedMechanism("DoubleJointedArmMechanism2d", 3, 2);
+    protected static final DoubleJointedArmMechanism2d doubleJointedArmMechanism2d = createDoubleJointedArmMechanism("DoubleJointedArmMechanism2d", 3, 2);
 
     static {
         configureShoulderMotor();
@@ -38,7 +37,7 @@ public class DoubleJointedArmConstants {
         SHOULDER_MOTOR.setupSignalUpdates(MotorSignal.CLOSED_LOOP_TARGET);
 
         shoulderMotorConfiguration.simulationSlot = new MotorProperties.Slot(100, 0, 0, 0, 0, 0);
-        shoulderMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 150, 0.5, 0.2, MINIMUM_ROTATION, MAXIMUM_ROTATION, true);
+        shoulderMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 150, 0.5, 0.2, Rotation2d.fromDegrees(-360), Rotation2d.fromDegrees(360), true);
 
         SHOULDER_MOTOR.configure(shoulderMotorConfiguration);
     }
@@ -53,7 +52,7 @@ public class DoubleJointedArmConstants {
         ELBOW_MOTOR.setupSignalUpdates(MotorSignal.CLOSED_LOOP_TARGET);
 
         elbowMotorConfiguration.simulationSlot = new MotorProperties.Slot(100, 0, 0, 0, 0, 0);
-        elbowMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 150, 0.5, 0.2, MINIMUM_ROTATION, MAXIMUM_ROTATION, true);
+        elbowMotorConfiguration.simulationProperties = new SimulationProperties.Slot(SimulationProperties.SimulationType.ARM, DCMotor.getFalcon500(1), 150, 0.5, 0.2, Rotation2d.fromDegrees(-360), Rotation2d.fromDegrees(360), true);
 
         ELBOW_MOTOR.configure(elbowMotorConfiguration);
     }

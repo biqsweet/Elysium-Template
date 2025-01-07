@@ -7,21 +7,32 @@ import frc.lib.generic.GenericSubsystem;
 import frc.lib.generic.hardware.motor.MotorProperties;
 
 import static frc.robot.subsystems.flywheel.FlywheelConstants.FLYWHEEL_MOTOR;
+import static frc.robot.subsystems.flywheel.FlywheelConstants.flywheelMechanism;
 
 public class Flywheel extends GenericSubsystem {
     public Command setFlywheelVoltage(double voltage) {
-        return Commands.run(() -> setVoltage(voltage), this);
+        return Commands.run(() -> FLYWHEEL_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage), this);
     }
 
     public Command stop() {
         return Commands.runOnce(FLYWHEEL_MOTOR::stopMotor, this);
     }
 
+    public double getCurrentVoltage() {
+        return FLYWHEEL_MOTOR.getVoltage();
+    }
+
     public Rotation2d getCurrentVelocity() {
         return Rotation2d.fromRotations(FLYWHEEL_MOTOR.getSystemVelocity());
     }
 
-    private void setVoltage(double voltage) {
-        FLYWHEEL_MOTOR.setOutput(MotorProperties.ControlMode.VOLTAGE, voltage);
+    public double getTargetVoltage() {
+        return FLYWHEEL_MOTOR.getClosedLoopTarget();
+    }
+
+    @Override
+    public void periodic() {
+        flywheelMechanism.updateCurrentSpeed(getCurrentVoltage());
+        flywheelMechanism.updateTargetSpeed(getTargetVoltage());
     }
 }
