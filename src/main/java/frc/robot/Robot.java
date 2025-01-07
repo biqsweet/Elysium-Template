@@ -4,14 +4,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.generic.hardware.HardwareManager;
 import org.littletonrobotics.junction.LoggedRobot;
 
+import static frc.robot.RobotContainer.POSE_ESTIMATOR;
+import static frc.robot.subsystems.leds.Leds.*;
+
 public class Robot extends LoggedRobot {
-    private Command autonomousCommand;
     private final CommandScheduler commandScheduler = CommandScheduler.getInstance();
+    private Command autonomousCommand;
     private RobotContainer robotContainer;
 
 
@@ -27,7 +31,7 @@ public class Robot extends LoggedRobot {
 
         HardwareManager.update();
 
-        RobotContainer.POSE_ESTIMATOR.periodic();
+        POSE_ESTIMATOR.periodic();
     }
 
     @Override
@@ -36,6 +40,9 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
+        Translation2d targetPose = new Translation2d(2, 2);
+        Translation2d robotPose = POSE_ESTIMATOR.getCurrentPose().getTranslation();
+        correctRobotPosition(robotPose,targetPose);
     }
 
     @Override
